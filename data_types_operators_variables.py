@@ -97,7 +97,8 @@ If price for a movie per day is 3 dollars, how much will you have to pay?"""
 little_mermaid = 3
 Brother_bear = 5
 Hercules = 1
-Total_rental_fee = (little_mermaid + Brother_bear + Hercules) * 3
+price_per_day = 3
+Total_rental_fee = (little_mermaid + Brother_bear + Hercules) * price_per_day
 Total_rental_fee
 
 """
@@ -124,7 +125,12 @@ elif schedule == :
 else:
 	print("proceed")
 
+#Ryan's
+class_has_space = bool(input('True or False?: '))
 
+schedule_works = bool(input('True or False?: '))
+student_can_enroll = class_has_space and schedule_works
+student_can_enroll
 
 """A product offer can be applied only if people buys more than 2 items, 
 and the offer has not expired. Premium members do not need to buy a specific amount of products."""
@@ -135,6 +141,13 @@ elif item >= 2 and offer_expire = False:
 else:
 	print("promo reject")
 
+#Ryan's
+is_premium = True
+person_bought_more_than_2_items = False
+offer_has_not_expired = True
+offer_ok = offer_has_not_expired and (is_premium or person_bought_more_than_2_items)
+offer_ok
+
 username = 'codeup'
 password = 'notastrongpassword'
 """Create a variable that holds a boolean value for each of the following conditions:
@@ -144,16 +157,14 @@ the username must be no more than 20 characters
 the password must not be the same as the username
 bonus neither the username or password can start or end with whitespace"""
 
-len(password) >= 5
-len(username) < 20
-username != password
+pwd_greater_than_5 = len(password) >= 5
+len(username) <= 20
+user_dif_pwd = username != password
 
 result = [password.startswith(' '), username.startswith(' ')]
 print(result)
 
-
-
-
+username_starts_or_ends_with_space = username[0] == " " or username[-1] == " "
 
 
 
