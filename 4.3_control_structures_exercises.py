@@ -1,7 +1,7 @@
 ## Conditional Basics
 
 # prompt the user for a day of the week, print out whether the day is Monday or not
-Prompt_day = input("Which day is it (Monday - Sunday? ")
+Prompt_day = input("Which day is it (Monday - Sunday)? ")
 if Prompt_day == 'Monday':
 	print("Yes it is Monday.")
 else:
@@ -14,6 +14,7 @@ elif Prompt_date == "Sunday":
 	print("Weekend")
 else:
 	print("weekday")
+
 #create variables and make up values for
 #the number of hours worked in one week
 hour_in_one_week = 70
@@ -30,6 +31,10 @@ weekly_paycheck_bonus = weekly_paycheck + (hour_in_one_week-40)*0.5*hourly_rate
 weekly_paycheck
 weekly_paycheck_bonus
 
+if <= 40:
+else: 
+
+
 ## Loop Basics
 
 # While
@@ -43,6 +48,9 @@ i = 5
 while i in range(5,16):
 	print (i)
 	i += 1
+while i <= 15:
+	print(i)
+	i += 1
 # print out: 5 6 7 ...14 15
 
 # Create a while loop that will count by 2's starting with 0 and ending at 100. 
@@ -50,12 +58,22 @@ i = 0
 while i in range(0,101):
 	print(i)
 	i+=2
+
+while i <= 100:
+	print(i)
+	i += 2
+
+for i in range(0,102,2):
+	print(i)
 # Follow each number with a new line.
 i = 0
 while i in range(0,101):
 	print(i)
 	print(' ')
 	i+=2
+
+for i in range (100,-10,-5):
+	print(i)
 # Alter your loop to count backwards by 5's from 100 to -10.
 i = 100
 while i in range(-10,101):
@@ -72,6 +90,10 @@ while i in range(2,1000000):
 		i **= 2
 	else:
 		break
+i = 2
+while i < 1000000:
+	print(i)
+	i = i**2
 # Write a loop that uses print to create the output shown below.
 """
 100
@@ -137,6 +159,9 @@ for i in range(1,10):
 # (Hint: use the isdigit method on strings to determine this). 
 # Use a loop and the continue statement to output all the odd numbers between 1 and 50, 
 # except for the number the user entered.
+odd_num = ""
+while True:
+	odd_num
 
 user_input = input("A number between 1 and 50: ")
 user_input = int(user_input)
@@ -238,19 +263,23 @@ Ask if the user wants to continue.
 Assume that the user will enter valid data.
 Only continue if the user agrees to.
 Example Output"""
-power_table = input("I can give you a table of powers.  What number would you like to go up to? ")
-print(power_table.isdigit())
+power_table = input("What number would you like to go up to? ")
+power_table.isdigit()
 power_table = int(power_table)
-
+print("                             ")
 i = 1
 print("Here is your table!")
 print("                             ")
-print("number   squared   cubed")
+print('{:<8s}{:>8s}{:>8s}'.format("number","squared","cubed"))
+print ('{:_^15}{:_^6}{:_^3}'.format(' | ',' | ',''))
+
 for i in range(1,power_table+1):
-	print(i, '      ', i**2, '        ', i**3)
+	print('{0:2d} {1:9d} {2:9d}'.format(i, i ** 2, i ** 3))
+	#print(str(i), str(i ** 2), str(i ** 3))
+	#print('{:<8s}{:>8s}{:>8s}'.format(i, i ** 2, i ** 3))
 	i += 1
 
-"""What number would you like to go up to? 5
+""" What number would you like to go up to? 5
 
 Here is your table!
 
@@ -263,3 +292,71 @@ number | squared | cubed
 5      | 25      | 125
 
 """
+
+"""Convert given number grades into letter grades.
+
+Prompt the user for a numerical grade from 0 to 100.
+Display the corresponding letter grade.
+Prompt the user to continue.
+Assume that the user will enter valid integers for the grades.
+The application should only continue if the user agrees to.
+Grade Ranges:
+
+A : 100 - 88
+B : 87 - 80
+C : 79 - 67
+D : 66 - 60
+F : 59 - 0"""
+
+grader = input("Ask me to convert 0-100 score into letter grade: ")
+grader.isdigit()
+grader = int(grader)
+while grader in range(0,101):
+	if grader >= 88:
+		print('A')
+	elif grader <= 87 and grader >= 80:
+		print('B')
+	elif grader <= 79 and grader >= 67:
+		print('C')
+	elif grader <= 66 and grader >= 60:
+		print('D')
+	else:
+		print('F')
+
+	choice = input("Would you like to continue? ")
+	if choice == "No":
+		break
+
+
+"""Create a list of dictionaries where each dictionary represents a book that you have read. 
+Each dictionary in the list should have the keys title, author, and genre. 
+Loop through the list and print out information about each book.
+
+Prompt the user to enter a genre, then loop through your books list and print 
+out the titles of all the books in that genre."""
+
+book_list = [{"Title": "Vendetta In Death","Author": "J.D. Robb", "Genre": "Urban Fantasy"},
+			{"Title": "Where the Crawdads Sing","Author":"Delia Owens", "Genre": "Literary Fiction"},
+			{"Title": "The Goldfinch", "Author": "Donna Tartt", "Genre": "Literary Fiction"}]
+"""for index in range(len(book_list)):
+	for key in book_list[index]:
+		print(book_list[index][key])
+print(*[content for dic in book_list for content in dic.values()], sep=' ')
+"""
+lookup_genre = input("Genre? ")
+
+#keyvalset = ["Urban Fantasy"]
+def get_genre(lookup_genre):
+	keyvalset = [lookup_genre]
+	printout_genre = list(filter(lambda d: d['Genre'] in keyvalset, book_list))
+	return printout_genre
+
+get_genre(lookup_genre)
+
+
+
+print([d for d if keyvalset in book_list])
+
+
+
+
