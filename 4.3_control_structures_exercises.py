@@ -15,7 +15,6 @@ elif Prompt_date == "Sunday":
 else:
 	print("weekday")
 #create variables and make up values for
-
 #the number of hours worked in one week
 hour_in_one_week = 70
 
@@ -177,9 +176,90 @@ Here is an odd number: 35
 # Prompt the user to enter a positive number and write a loop that counts from 0 to that number. 
 # (Hints: first make sure that the value the user entered is a valid number, 
 # also note that the input function returns a string, so you'll need to convert this to a numeric type.)
-count_to_inp = input("Give me a number: ")
+count_to_inp = input("Give me a positive number: ")
 print(count_to_inp.isdigit())
 count_to_inp = int(count_to_inp)
 i = 0
-for 0 in range(0, count_to_inp+1):
+for i in range(0,count_to_inp+1):
+	print(i)
+	i += 1
 
+
+count_to_inp = input("Give me a positive number: ")
+print(count_to_inp.isdigit())
+count_to_inp = int(count_to_inp)
+sum_range = range(0, count_to_inp+1)
+counting = sum(sum_range)
+print(counting)
+
+# Write a program that prompts the user for a positive integer. 
+# Next write a loop that prints out the numbers from the number the user entered down to 1.
+count_to_n_inp = input("Give me an integer: ")
+print(count_to_n_inp.isdigit())
+count_to_n_inp = int(count_to_n_inp)
+i = count_to_n_inp
+while i in range(1,count_to_n_inp+1):
+	print(i)
+	i -= 1
+
+
+## Fizzbuzz
+
+"""One of the most common interview questions for entry-level programmers is the FizzBuzz test. 
+Developed by Imran Ghory, the test is designed to test basic looping and conditional logic skills.
+
+Write a program that prints the numbers from 1 to 100.
+For multiples of three print "Fizz" instead of the number
+For the multiples of five print "Buzz".
+For numbers which are multiples of both three and five print "FizzBuzz"."""
+i = 1
+for i in range(1,101):
+	print(i)
+	i += 1
+
+fb = input("Give me a number between 1 and 100, please. ")
+print(fb.isdigit())
+fb = int(fb)
+def fizzbuzz_check(fb):
+	if fb % 3 == 0 and fb % 5 == 0:
+		return "FizzBuzz"
+	elif fb % 3 == 0:
+		return "Fizz"
+	elif fb % 5 == 0:
+		return "Buzz"
+	
+fizzbuzz_check(fb)
+
+## Display a table of powers.
+
+"""Prompt the user to enter an integer.
+Display a table of squares and cubes from 1 to the value entered.
+Ask if the user wants to continue.
+Assume that the user will enter valid data.
+Only continue if the user agrees to.
+Example Output"""
+power_table = input("I can give you a table of powers.  What number would you like to go up to? ")
+print(power_table.isdigit())
+power_table = int(power_table)
+
+i = 1
+print("Here is your table!")
+print("                             ")
+print("number   squared   cubed")
+for i in range(1,power_table+1):
+	print(i, '      ', i**2, '        ', i**3)
+	i += 1
+
+"""What number would you like to go up to? 5
+
+Here is your table!
+
+number | squared | cubed
+------ | ------- | -----
+1      | 1       | 1
+2      | 4       | 8
+3      | 9       | 27
+4      | 16      | 64
+5      | 25      | 125
+
+"""
