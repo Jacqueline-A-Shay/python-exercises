@@ -9,6 +9,11 @@ def is_two(get_num):
 		return False
 is_two(5)
 
+def is_two(x):
+	return x == 2 or x == "2"
+def is_two(x):
+	return x in [2,'2']
+
 """Define a function named is_vowel. It should return True if the passed string is a vowel, 
 False otherwise.
 """
@@ -18,19 +23,22 @@ def is_vowel(obtain_string):
 	obtain_string = obtain_string.lower()
 	if obtain_string in ('a','e','i','o','u'):
 		return True
-is_vowel('a')
+# is_vowel('a')
+# if c == 'u'
+# return True
+# else:
+# 	False
+	# not necessary becuase c == 'u' will already return boolean
 
 
-def is_vowel(strin):
-	strin = ','.join(strin)
-	strin = strin.split(',')
-	x = [s for s in strin if s.count('a') + s.count('e') + s.count('i') + s.count('o') + s.count('u') > 1]
-	if x != 0:
-		True
-	else:
-		False
-	
-is_vowel('apple')
+def is_vowel(x):
+	return len(x) == 1 and x.lower() in 'aeiou'
+def is_vowel(c):
+	vowels = ['a','e','i','o','u']
+	return len(c) == 1 and c.lower() in vowels
+
+assert is_vowel('a') == True
+assert is_vowel('b') == False
 
 
 """Define a function named is_consonant. It should return True if the passed string is a consonant, 
@@ -45,7 +53,9 @@ def is_consonant(c_strin):
 			True
 is_consonant('csq')		
 
-
+def is_consonant(c):
+	return not is_vowel(c)
+	
 """Define a function that accepts a string that is a word. 
 The function should capitalize the first letter of the word if the word starts with a consonant."""	
 def capitalize_consonant(target_con):
@@ -59,13 +69,33 @@ def capitalize_consonant(target_con):
 
 capitalize_consonant("kpple")
 
+def capitalize_consonant(c):
+	if is_consonant(c[0]):
+		return c.capitalize()
+	return c
+
+assert capitalize_consonant('codeup') == 'Codeup'
+assert capitalize_consonant('bayes') == 'Bayes'
+
+def cap_if_conso(word):
+	word.capitalize() if is_consonant(c[0]) else c
 
 """Define a function named calculate_tip. It should accept a tip percentage 
 (a number between 0 and 1) and the bill total, and return the amount to tip."""
 def calculate_tip(tip_percentage, bill):
 	if tip_percentage > 0 and tip_percentage < 1:
 		return bill * tip_percentage
-calculate_tip(0.2, 18)
+assert calculate_tip(0.2, 18) == 3.6
+assert calculate_tip(0.25, 80) == 20.0
+
+def calculate_tip(tip_percentage, bill):
+	if tip_percentage > 1:
+		percentage /= 100
+
+	return bill * tip_percentage
+assert calculate_tip(0.2, 18) == 3.6
+assert calculate_tip(0.25, 80) == 20.0
+
 
 """Define a function named apply_discount. It should accept a original price, 
 and a discount percentage, and return the price after the discount is applied."""
@@ -78,8 +108,17 @@ apply_discount(55,0.5)
 """Define a function named handle_commas. It should accept a string that is a number 
 that contains commas in it as input, and return a number as output."""
 def hand_commas(num_with_commas):
-	return (num_with_commas.replace(',',''))
-hand_commas('55,555')
+	return float(num_with_commas.replace(',',''))
+assert hand_commas('55,555') == 55555
+assert hand_commas('1,000,000') = 1000000
+
+def hand_commas(s):
+	return float("".join([c for c in s if c != ',']))
+assert hand_commas('55,555') == 55555
+assert hand_commas('1,000,000') == 1000000
+
+'a,b,b,d'.split(',') # turn string into list OR list('abcd') 
+"".join([]) # .join will use a string as a 'glue' to put a list together
 
 """Define a function named get_letter_grade. 
 It should accept a number and return the letter grade associated with that number (A-F)."""
@@ -97,7 +136,22 @@ def get_letter_grade(grade):
 			print('D')
 		else:
 			print('F')
-get_letter_grade(88.5)
+get_letter_grade(88.5) 
+
+grade = {
+	'A':range(94,101),
+	'B':range(87,94),
+	'C':range (80,87),
+	'D':range(70,80),
+	'F':range(0,70)
+}
+
+def get_letter_grade(n):
+
+	for grade_letter, grade_range in grades.item():
+		if round(n) in grade_range:
+			return grade_letter
+		return 'Error'
 
 """Define a function named remove_vowels that accepts a string and 
 returns a string with all the vowels removed."""
@@ -177,61 +231,15 @@ assert sayhello('bayes') == 'hello, bayes!'
 returns a list that is the cumulative sum of the numbers in the list.
 cumsum([1, 1, 1]) returns [1, 2, 3]
 cumsum([1, 2, 3, 4]) returns [1, 3, 6, 10]"""
-def cumsum(list_of_num):
-	list_of_num = [list_of_num]
-	post_process = []
-	sum_num = 0
-	for idx, val in enumerate(list_of_num):
-		sum_num += int(val)
-		post_process = post_process.append(sum_num)
-	return post_process
-		
-	#return post_process
-cumsum('1, 2, 3')
+LETTERS = ' _abcdefghijklmnopqrstuvwxyz0123456789'
+def normalize_name(python_identifier):
+    python_identifier = python_identifier.lower()
+    valid_chars = []
+    for character in python_identifier:
+        if character in LETTERS:
+            valid_chars.append(character)
+    return ''.join(valid_chars).strip().replace(' ', '_')
 
-
-def cumsum(list_of_num):
-	list_of_num = [list_of_num]
-	post_process = []
-	sum_num = 0
-	for val in enumerate(list_of_num):
-		print(idx, val)
-cumsum('1, 2, 3')
-	#index sum(i in range(x[0],x[current ])
-
-	# for i in range(list_of_num) and x in list_of_num:
-	# 	append(x + 
-
-cumsum('1, 2, 3')
-def cumsum(list_of_num):
-	sum = 0
-	post_process = []
-	for item in list_of_num:
-		yield sum
-		sum += item
-		post_process = post_process.append(sum)
-	return post_process
-cumsum('1, 2, 3')
-
-
-def cumsum(it):
-    total = 0
-    new_ls = []
-    for x in it:
-        total += x
-        yield total
-list(cumsum([1,2,3,4,5]))
-
-a = [1, 2, 3 ,4, 5]
-print(type(a))
-cumsum = [sum(a[:i+1]) for i in range(len(a))]   
-cumsum
-
-def cumsum(list_of_num):
-	list_of_num = [list_of_num]
-	result = [sum(list_of_num[:i+1]) for i in range(len(list_of_num))]   
-	return result
-cumsum('1, 2, 3')
 
 
 # Create a function named twelveto24. It should accept a string in the format 10:45am or 
