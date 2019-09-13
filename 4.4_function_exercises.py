@@ -135,6 +135,15 @@ def normalized_name(valid_py_name):
 	NG_py_identifier = set('!@#$%^&*()+,?')
 	valid_py_name = str(valid_py_name)
 	valid_py_name = valid_py_name.lower()
+	valid_py_name = [valid_py_name]
+	if valid_py_name[0] == ' ':
+		valid_py_name = valid_py_name[1:]
+	if valid_py_name[-1 ] == ' ':
+		valid_py_name = valid_py_name[:-1]
+		valid_py_name = str(valid_py_name)
+		valid_py_name = valid_py_name.replace(' ','_')
+		return  "".join([i for i in valid_py_name if i not in NG_py_identifier])
+
 	"""
 				valid_py_name = valid_py_name.strip(' ')
 				valid_py_name = valid_py_name.replace(' ','_')"""
@@ -147,9 +156,8 @@ def normalized_name(valid_py_name):
 
 	"""
 
-	return  "".join([i for i in valid_py_name if i not in NG_py_identifier])
 	
-normalized_name('% Completed')
+normalized_name('% Completed ')
 
 """Write a function named cumsum that accepts a list of numbers and 
 returns a list that is the cumulative sum of the numbers in the list.
