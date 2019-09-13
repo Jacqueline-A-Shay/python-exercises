@@ -123,7 +123,7 @@ First Name will become first_name
 def normalized_name(valid_py_name):
 	NG_py_identifier = set('!@#$%^&*()+,?')
 	valid_py_name = str(valid_py_name)
-	valid_py_name = valid_py_name.strip(' ')
+	valid_py_name = valid_py_name.strip()
 	valid_py_name = valid_py_name.replace(' ','_')
 	valid_py_name = valid_py_name.lower()
 	return  "".join([i for i in valid_py_name if i not in NG_py_identifier])
@@ -140,8 +140,8 @@ def normalized_name(valid_py_name):
 		valid_py_name = valid_py_name[1:]
 	if valid_py_name[-1 ] == ' ':
 		valid_py_name = valid_py_name[:-1]
-		valid_py_name = str(valid_py_name)
-		valid_py_name = valid_py_name.replace(' ','_')
+		# valid_py_name = str(valid_py_name)
+		# valid_py_name = valid_py_name.replace(' ','_')
 		return  "".join([i for i in valid_py_name if i not in NG_py_identifier])
 
 	"""
@@ -155,11 +155,116 @@ def normalized_name(valid_py_name):
 		turn all remaining space into underscore
 
 	"""
+return_value = normalized_name('% Completed ')
+assert return_value == '_completed','you can comment on your assert'
+def sayhello(name):
+	return 'hello, {}!'.format(name)
+	return 'hello,' + name + '!'
+	return 'hello, %s!' %name
+	return f'hello, {name}!' #most recommended
+sayhello('bayes')
+assert sayhello('bayes') == 'hello, bayes!'
+# assert
+# sanity check, also better for future code reader to understand what's 
+# the expected output and more clear there's this sanity check here
+# if test ok, no result will show
+# only show false
 
-	
-normalized_name('% Completed ')
+# ipython -i file_name.py
+# can pass in different part of the code and run individually
 
 """Write a function named cumsum that accepts a list of numbers and 
 returns a list that is the cumulative sum of the numbers in the list.
 cumsum([1, 1, 1]) returns [1, 2, 3]
 cumsum([1, 2, 3, 4]) returns [1, 3, 6, 10]"""
+def cumsum(list_of_num):
+	list_of_num = [list_of_num]
+	post_process = []
+	sum_num = 0
+	for idx, val in enumerate(list_of_num):
+		sum_num += int(val)
+		post_process = post_process.append(sum_num)
+	return post_process
+		
+	#return post_process
+cumsum('1, 2, 3')
+
+
+def cumsum(list_of_num):
+	list_of_num = [list_of_num]
+	post_process = []
+	sum_num = 0
+	for val in enumerate(list_of_num):
+		print(idx, val)
+cumsum('1, 2, 3')
+	#index sum(i in range(x[0],x[current ])
+
+	# for i in range(list_of_num) and x in list_of_num:
+	# 	append(x + 
+
+cumsum('1, 2, 3')
+def cumsum(list_of_num):
+	sum = 0
+	post_process = []
+	for item in list_of_num:
+		yield sum
+		sum += item
+		post_process = post_process.append(sum)
+	return post_process
+cumsum('1, 2, 3')
+
+
+def cumsum(it):
+    total = 0
+    new_ls = []
+    for x in it:
+        total += x
+        yield total
+list(cumsum([1,2,3,4,5]))
+
+a = [1, 2, 3 ,4, 5]
+print(type(a))
+cumsum = [sum(a[:i+1]) for i in range(len(a))]   
+cumsum
+
+def cumsum(list_of_num):
+	list_of_num = [list_of_num]
+	result = [sum(list_of_num[:i+1]) for i in range(len(list_of_num))]   
+	return result
+cumsum('1, 2, 3')
+
+
+# Create a function named twelveto24. It should accept a string in the format 10:45am or 
+# 4:30pm and return a string that is the representation of the time in a 24-hour format. 
+
+# Bonus write a function that does the opposite.
+
+def twelveto24(time):
+	if time[-2: ] != "PM":
+		return (time.replace("AM",""))
+	if time[-2: ] == "PM":
+		time = time.replace("PM","")
+		return time.replace(time[0:2], str((int(time[0:2]) + 12)))
+		# hh + 12
+
+twelveto24("09:45AM")
+
+
+
+
+
+# Create a function named col_index. It should accept a spreadsheet column name, 
+# and return the index number of the column.
+# col_index('A') returns 1
+# col_index('B') returns 2
+# col_index('AA') returns 27
+
+def col_index(col_name):
+	#converty alphabets to numbers
+
+
+
+
+
+
+
