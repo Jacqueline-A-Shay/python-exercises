@@ -7,13 +7,16 @@ def is_two(get_num):
 		return True
 	else:
 		return False
-is_two(5)
 
 def is_two(x):
-	return x == 2 or x == "2"
-def is_two(x):
-	return x in [2,'2']
+    return x in [2, '2', 'two']
 
+assert is_two(2) == True
+assert is_two('2') == True
+assert is_two('four') == False
+assert is_two(3) == False
+assert is_two(4) == False
+assert is_two('two') == True
 """Define a function named is_vowel. It should return True if the passed string is a vowel, 
 False otherwise.
 """
@@ -41,6 +44,42 @@ assert is_vowel('a') == True
 assert is_vowel('b') == False
 
 
+def is_vowel(c):
+    if len(c) > 1:
+        return False
+    c = c.lower()
+    if c == 'a':
+        return True
+    elif c == 'e':
+        return True
+    elif c == 'i':
+        return True
+    elif c == 'o':
+        return True
+    elif c == 'u':
+        return True
+    else:
+        return False
+
+
+def is_vowel(c):
+    vowels = ['a', 'e', 'i', 'o', 'u']
+    return len(c) == 1 and c.lower() in vowels
+    
+def is_vowel(c):
+    return len(c) == 1 and c.lower() in 'aeiou'
+    
+assert is_vowel('a') == True
+assert is_vowel('e') == True
+assert is_vowel('i') == True
+assert is_vowel('o') == True
+assert is_vowel('u') == True
+assert is_vowel('b') == False
+assert is_vowel('y') == False
+assert is_vowel('A') == True
+assert is_vowel('ab') == False
+assert is_vowel('aa') == False
+
 """Define a function named is_consonant. It should return True if the passed string is a consonant, 
 False otherwise. Use your is_vowel function to accomplish this."""
 
@@ -55,6 +94,15 @@ is_consonant('csq')
 
 def is_consonant(c):
 	return not is_vowel(c)
+
+def is_consonant(c):
+    return not is_vowel(c)
+
+assert is_consonant('c') == True
+assert is_consonant('C') == True
+assert is_consonant('a') == False
+
+
 	
 """Define a function that accepts a string that is a word. 
 The function should capitalize the first letter of the word if the word starts with a consonant."""	
@@ -79,6 +127,26 @@ assert capitalize_consonant('bayes') == 'Bayes'
 
 def cap_if_conso(word):
 	word.capitalize() if is_consonant(c[0]) else c
+
+
+def cap_if_consonant(word):
+    if is_consonant(word[0]):
+        return word.capitalize()
+    else:
+        return word
+
+def cap_if_consonant(word):
+    if is_consonant(word[0]):
+        return word.capitalize()
+    return word
+
+def cap_if_consonant(word):
+    return word.capitalize() if is_consonant(word[0]) else word
+
+assert cap_if_consonant('codeup') == 'Codeup'
+assert cap_if_consonant('bayes') == 'Bayes'
+assert cap_if_consonant('aardvark') == 'aardvark'
+
 
 """Define a function named calculate_tip. It should accept a tip percentage 
 (a number between 0 and 1) and the bill total, and return the amount to tip."""
@@ -120,6 +188,22 @@ assert hand_commas('1,000,000') == 1000000
 'a,b,b,d'.split(',') # turn string into list OR list('abcd') 
 "".join([]) # .join will use a string as a 'glue' to put a list together
 
+def handle_commas(s):
+    s = s.replace(',', '')
+    return float(s)
+
+def handle_commas(s):
+    return float(s.replace(',', ''))
+
+def handle_commas(s):
+    return float(''.join([c for c in s if c != ',']))
+
+assert handle_commas('1,000') == 1000.0
+assert handle_commas('10') == 10.0
+assert handle_commas('1,000,000') == 1000000
+
+
+
 """Define a function named get_letter_grade. 
 It should accept a number and return the letter grade associated with that number (A-F)."""
 
@@ -152,6 +236,51 @@ def get_letter_grade(n):
 		if round(n) in grade_range:
 			return grade_letter
 		return 'Error'
+
+grade_minimums = (
+    ('A+',98.5),('A',91.5),('A-',89.5),
+    ('B+',88.5),('B',81.5),('B-',79.5),
+    ('C+',78.5),('C',71.5),('C-',69.5),
+    ('D+',68.5),('D',61.5),('D-',59.5),
+    ('F',0)
+)
+
+def get_letter_grade(numeric_grade):
+    ubound = max(100, numeric_grade + .01)
+    for grade in grade_minimums:
+        if numeric_grade < grade[1]:
+            ubound = grade[1]
+        else:
+            return grade[0]
+        
+
+assert get_letter_grade(150) == 'A+'
+assert get_letter_grade(98.4) == 'A'
+assert get_letter_grade(91) == 'A-'
+assert get_letter_grade(59.4) == 'F'
+assert get_letter_grade(81.5) == 'B'
+assert get_letter_grade(89.5) == 'A-'
+
+get_letter_grade(90)
+
+grades = {
+    'A': range(94, 101),
+    'B': range(87, 94),
+    'C': range(80, 87),
+    'D': range(70, 80),
+    'F': range(0, 70)
+}
+
+def get_letter_grade(n):
+    for grade_letter, grade_range in grades.items():
+        if round(n) in grade_range:
+            return grade_letter
+    return 'Error: don\'t know how to get a letter grade for %s' % n
+
+get_letter_grade(80)
+
+
+
 
 """Define a function named remove_vowels that accepts a string and 
 returns a string with all the vowels removed."""

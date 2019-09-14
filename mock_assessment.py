@@ -3,7 +3,7 @@ def normalize_name(valid_py_name):
 	valid_py_name = str(valid_py_name)
 	valid_py_name = valid_py_name.strip()
 	valid_py_name = valid_py_name.replace(' ','_')
-	valid_py_name = valid_py_name.lstrip('_','')
+
 	valid_py_name = valid_py_name.lower()
 
 	return "".join([i for i in valid_py_name if i not in NG_py_identifier])
