@@ -204,7 +204,7 @@ print("Result with pure Py: {}".format(evens_in_a))
 print("Result with Numpy: {}".format(aa[aa % 2 == 0]))
 
 
-# In[110]:
+# In[135]:
 
 
 ## What about life in two dimensions? 
@@ -219,6 +219,7 @@ b = [
 # Exercise 1 - refactor the following to use numpy. Use sum_of_b as the variable. 
 # **Hint, you'll first need to make sure that the "b" variable is a numpy array**
 print(type(b))
+print(bb)
 bb = np.array(b)
 print(type(bb))
 
@@ -236,34 +237,91 @@ print("Result with pure Py: {}".format(sum_of_b(b)))
 print("Result with Numpy: {}".format((bb.sum())))
 
 
-# In[ ]:
+# In[131]:
 
 
 # Exercise 2 - refactor the following to use numpy. 
 min_of_b = min(b[0]) if min(b[0]) <= min(b[1]) else min(b[1])  
 
+print("Result with pure Py: {}".format(min_of_b))
 
-# In[ ]:
+print("Result with Numpy: {}".format((bb.min())))
+
+
+# In[132]:
 
 
 # Exercise 3 - refactor the following maximum calculation to find the answer with numpy.
 max_of_b = max(b[0]) if max(b[0]) >= max(b[1]) else max(b[1])
+print("Result with pure Py: {}".format(max_of_b))
+
+
+print("Result with Numpy: {}".format(bb.max()))
+
+
+# In[139]:
+
+
+summ = sum(b[0]) + sum(b[1])
+num = len(b[0]) + len(b[1])
+avg = summ/num
+print(avg)
+
+
+# In[145]:
 
 
 # Exercise 4 - refactor the following using numpy to find the mean of b
-mean_of_b = (sum(b[0]) + sum(b[1])) / (len([b[0]]) + len(b[1]))
+# mean_of_b = (sum(b[0]) + sum(b[1])) / (len(b[0]) +len(b[1]))
+# print("Result with pure Py: {}".format(mean_of_b))
 
-# Exercise 5 - refactor the following to use numpy for calculating the product of all numbers multiplied together.
-product_of_b = 1
-for row in b:
-    for number in row:
-        product_of_b *= number
+# mean_of_b = (sum(b[0]) + sum(b[1])) / (len(b[0]) + len(b[1]))
+# mean_of_b
+# summ = sum(b[0]) + sum(b[1])
+# num = len(b[0]) + len(b[1])
+# avg = summ/num
+# print(avg)
+
+
+mean_of_bb = bb.mean()
+print(mean_of_bb)
+
+
+# In[157]:
+
+
+# Exercise 5 - 
+# refactor the following to use numpy for calculating the product of 
+# all numbers multiplied together.
+
+def xxoo(num):
+    product_of_b = 1
+    for row in b:
+        for number in row:
+            product_of_b *= number
+    return product_of_b
+print(xxoo(b))
+
+
+        
+print(np.prod(bb))
+
+
+# In[159]:
+
 
 # Exercise 6 - refactor the following to use numpy to find the list of squares 
-squares_of_b = []
-for row in b:
-    for number in row:
-        squares_of_b.append(number**2)
+def xxoo(num):
+    squares_of_b = []
+    for row in b:
+        for number in row:
+            squares_of_b.append(number**2)
+    return squares_of_b
+print(xxoo(b))
+print(np.square(bb))
+
+
+# In[163]:
 
 
 # Exercise 7 - refactor using numpy to determine the odds_in_b
@@ -272,6 +330,10 @@ for row in b:
     for number in row:
         if(number % 2 != 0):
             odds_in_b.append(number)
+print(bb[bb % 2 != 0])
+
+
+# In[164]:
 
 
 # Exercise 8 - refactor the following to use numpy to filter only the even numbers
@@ -280,14 +342,36 @@ for row in b:
     for number in row:
         if(number % 2 == 0):
             evens_in_b.append(number)
+print(bb[bb % 2 == 0])
+
+
+# In[165]:
+
 
 # Exercise 9 - print out the shape of the array b.
+np.shape(bb)
+
+
+# In[166]:
+
 
 # Exercise 10 - transpose the array b.
+np.transpose(bb)
+
+
+# In[171]:
+
 
 # Exercise 11 - reshape the array b to be a single list of 6 numbers. (1 x 6)
+bb.tolist()
 
-# Exercise 12 - reshape the array b to be a list of 6 lists, each containing only 1 number (6 x 1)
+
+# In[179]:
+
+
+# Exercise 12 - 
+# reshape the array b to be a list of 6 lists, each containing only 1 number (6 x 1)
+bb.reshape(6,1)
 
 
 # In[ ]:
