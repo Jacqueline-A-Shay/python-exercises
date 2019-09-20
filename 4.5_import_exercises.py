@@ -1,3 +1,64 @@
+x = "yelp!"
+import functions_exercises
+functions_exercises.capitalize_consonant(x)
+
+tip_percentage = '0.5'
+bill = '50'
+from functions_exercises import calculate_tip
+
+x = '15,000'
+from functions_exercises import handle_commas('15,000') as hc
+
+
+In [38]: a = ['1','2','3']                                                      
+In [39]: b = ['a','b','c']                                                      
+In [40]: for r in itertools.product(a,b): print(r[0] + r[1])   
+
+for r in itertools.product(b,b): print(r[0] + r[1])   #but how to count?
+
+
+
+import json
+from pprint import pprint                                              
+
+with open('profiles.json', encoding='utf-8') as data_file: 
+	data = json.loads(data_file.read()) 
+
+data    
+
+count = 0
+for feature in data:
+	count += 1
+print(count)
+
+#Total number of users
+for feature in data:
+	(data.count(feature["_id"]))
+
+from collections import Counter
+count = Counter()
+for item in data:
+    for key, value in item.items():
+        if key.startswith('_id'):
+            count.update([key[4:]])
+
+# Number of active users
+# Number of inactive users
+ca = 0
+ci = 0
+for feature in data:
+	print(sum(feature["isActive"].values(1)))
+
+#find the lowest 
+# lowest_balance = first_user = profile[0]
+# go thru list, replace whenever lower than profile[0]
+# so we have all the info associated for further use
+
+
+# fruit_counts.items() > turn dictionary into [(k1,v1), (k2,v2)...]
+counts = list(fruit_counts.items())
+counts[1] = ('apple', 16)
+min(counts, key=lambda pair: pair[1])
 """Define a function named is_two. 
 It should accept one input and return True if the passed input is either 
 the number or the string 2, False otherwise."""
@@ -251,18 +312,24 @@ for example:
 Name will become name
 First Name will become first_name
 % Completed will become completed"""
-
 def normalized_name(x):
 	weird = set('!@#$%')
-	alphabets = set("abcdefghijklmnopqrstuvwxyz0123456789_ ")
-	x = ''.join([w.lower() for w in x if w.lower() in alphabets and w.lower() not in weird])
+	alphabets = set("_abcdefghijklmnopqrstuvwxyz0123456789")
 	x = x.strip()
-	x = x.replace(' ','_')
-	return x
-
+	return [w.lower() for w in x if w.lower() in alphabets and not in weird]
+	
 assert normalized_name('% Completed') == 'completed'
-assert normalized_name(' First Name') == 'first_name'
 
+
+def normalized_name(valid_py_name):
+	NG_py_identifier = set('!@#$%')
+	valid_py_name = str(valid_py_name)
+	valid_py_name = valid_py_name.strip()
+	valid_py_name = valid_py_name.replace(' ','_')
+	valid_py_name = valid_py_name.lower()
+	return  "".join([i for i in valid_py_name if i not in NG_py_identifier])
+	
+normalized_name('% Completed')
 # this will turn ALL space into underscore
 # but for the leading and trailing white space we want to remove instead
 def normalized_name(valid_py_name):
@@ -311,14 +378,16 @@ assert sayhello('bayes') == 'hello, bayes!'
 returns a list that is the cumulative sum of the numbers in the list.
 cumsum([1, 1, 1]) returns [1, 2, 3]
 cumsum([1, 2, 3, 4]) returns [1, 3, 6, 10]"""
+LETTERS = ' _abcdefghijklmnopqrstuvwxyz0123456789'
+def normalize_name(python_identifier):
+    python_identifier = python_identifier.lower()
+    valid_chars = []
+    for character in python_identifier:
+        if character in LETTERS:
+            valid_chars.append(character)
+    return ''.join(valid_chars).strip().replace(' ', '_')
 
-def cumsum(your_list):
-    cumsum = []
-    cum = 0
-    for i in your_list:
-        cum += i
-        cumsum.append(cum)
-    return cumsum
+
 
 # Create a function named twelveto24. It should accept a string in the format 10:45am or 
 # 4:30pm and return a string that is the representation of the time in a 24-hour format. 
@@ -345,15 +414,12 @@ twelveto24("09:45AM")
 # col_index('B') returns 2
 # col_index('AA') returns 27
 
-def col_index(str):
-    str = str.lower()
-    str = list(str)
-    col = 0
-    it = 0
-    for i in str:
-        col += (ord(i) - 96) * (26**it)
-        it +=1
-    return col
-col_index('AA')
+def col_index(col_name):
+	#converty alphabets to numbers
+
+
+
+
+
 
 
