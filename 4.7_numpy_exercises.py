@@ -86,7 +86,7 @@ b
 # in this case if directly do print, the image will look very messy
 
 
-# In[ ]:
+# In[96]:
 
 
 import numpy as np
@@ -94,38 +94,157 @@ import numpy as np
 
 ## Setup 1
 a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+aa = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+print(aa)
 
 # Use python's built in functionality/operators to determine the following:
 # Exercise 1 - Make a variable called sum_of_a to hold the sum of all the numbers in above list
 
-# Exercise 2 - Make a variable named min_of_a to hold the minimum of all the numbers in the above list
+sum_of_a = sum([i for i in a])
+print(sum_of_a)
 
-# Exercise 3 - Make a variable named max_of_a to hold the max number of all the numbers in the above list
+print(np.sum(a))
+# summ_of_aa = aa.sum()
+# sum_of_aa
 
-# Exercise 4 - Make a variable named mean_of_a to hold the average of all the numbers in the above list
 
-# Exercise 5 - Make a variable named product_of_a to hold the product of multiplying all the numbers in the above list together
+# In[64]:
 
-# Exercise 6 - Make a variable named squares_of_a. It should hold each number in a squared like [1, 4, 9, 16, 25...]
+
+# Exercise 2 - 
+# Make a variable named min_of_a to hold the minimum of all the numbers in the above list
+min_of_a = min(a)
+
+print(min_of_a)
+
+print(np.min(aa))
+
+
+# In[71]:
+
+
+# Exercise 3 - 
+# Make a variable named max_of_a to hold the max number of all the numbers in the above list
+
+max_of_a = max(a)
+print(max_of_a)
+print(np.max(aa))
+
+
+# In[76]:
+
+
+# Exercise 4 - 
+# Make a variable named mean_of_a to hold the average of all the numbers in the above list
+import statistics as s 
+mean_of_a = s.mean(a)
+print(mean_of_a)
+
+mean_of_a1 = sum(a)/len(a)
+print(mean_of_a1)
+
+print(np.mean(aa))
+
+
+# In[85]:
+
+
+# Exercise 5 - 
+# Make a variable named product_of_a to hold the product of multiplying all the numbers in the above list together
+def product_of_a(x):
+    result = 1
+    for i in x:
+        result = result * i
+    return result
+print(product_of_a(a))
+
+from functools import reduce 
+result1 = reduce((lambda x, y: x * y), a) 
+print(result1)
+
+
+print(np.prod(aa))
+
+
+# In[89]:
+
+
+# Exercise 6 - Make a variable named squares_of_a. 
+# It should hold each number in a squared like [1, 4, 9, 16, 25...]
+squares_of_a = list(map(lambda n: n**2, a))
+print(squares_of_a)
+
+def squares_of_a1(num):
+    result = []
+    for i in num:
+        result.append(i**2)
+    return result
+print(squares_of_a1(a))
+
+print(np.square(aa))
+
+
+# In[95]:
+
 
 # Exercise 7 - Make a variable named odds_in_a. It should hold only the odd numbers
+odds_in_a = [i for i in a if i % 2 != 0]
+print(odds_in_a)
+
+print(aa[aa % 2 == 1])
+
+
+# In[99]:
+
 
 # Exercise 8 - Make a variable named evens_in_a. It should hold only the evens.
+evens_in_a = [i for i in a if i % 2 == 0]
+print("Result with pure Py: {}".format(evens_in_a))
 
-## What about life in two dimensions? A list of lists is matrix, a table, a spreadsheet, a chessboard...
-## Setup 2: Consider what it would take to find the sum, min, max, average, sum, product, and list of squares for this list of two lists.
+print("Result with Numpy: {}".format(aa[aa % 2 == 0]))
+
+
+# In[110]:
+
+
+## What about life in two dimensions? 
+# A list of lists is matrix, a table, a spreadsheet, a chessboard...
+## Setup 2: Consider what it would take to find 
+# the sum, min, max, average, sum, product, and list of squares for this list of two lists.
 b = [
     [3, 4, 5],
     [6, 7, 8]
 ]
 
-# Exercise 1 - refactor the following to use numpy. Use sum_of_b as the variable. **Hint, you'll first need to make sure that the "b" variable is a numpy array**
-sum_of_b = 0
-for row in b:
-    sum_of_b += sum(row)
+# Exercise 1 - refactor the following to use numpy. Use sum_of_b as the variable. 
+# **Hint, you'll first need to make sure that the "b" variable is a numpy array**
+print(type(b))
+bb = np.array(b)
+print(type(bb))
+
+def sum_of_b(num):
+    sum_of_b = 0
+    for row in b:
+        sum_of_b += sum(row)
+    return sum_of_b
+
+
+    
+print("Result with pure Py: {}".format(sum_of_b(b)))
+
+
+print("Result with Numpy: {}".format((bb.sum())))
+
+
+# In[ ]:
+
 
 # Exercise 2 - refactor the following to use numpy. 
 min_of_b = min(b[0]) if min(b[0]) <= min(b[1]) else min(b[1])  
+
+
+# In[ ]:
+
 
 # Exercise 3 - refactor the following maximum calculation to find the answer with numpy.
 max_of_b = max(b[0]) if max(b[0]) >= max(b[1]) else max(b[1])
@@ -170,6 +289,10 @@ for row in b:
 
 # Exercise 12 - reshape the array b to be a list of 6 lists, each containing only 1 number (6 x 1)
 
+
+# In[ ]:
+
+
 ## Setup 3
 c = [
     [1, 2, 3],
@@ -193,6 +316,9 @@ c = [
 # Exercise 7 - Write the code necessary to sum up the result of c times c transposed. Answer should be 261
 
 # Exercise 8 - Write the code necessary to determine the product of c times c transposed. Answer should be 131681894400.
+
+
+# In[ ]:
 
 
 ## Setup 4
@@ -221,16 +347,4 @@ d = [
 # Exercise 9 - Transpose and then print out the shape of d.
 
 # Exercise 10 - Reshape d into an array of 9 x 2
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
