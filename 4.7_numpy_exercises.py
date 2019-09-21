@@ -426,28 +426,39 @@ x
 cc.shape
 
 
-# In[ ]:
+# In[200]:
 
 
 # Exercise 5 - Transpose c and print out transposed result.
+d = cc.transpose()
+d
 
 
-# In[186]:
-
-
-
-
-
+# In[203]:
 
 
 # Exercise 6 - Multiply c by the c-Transposed and print the result.
-
-# Exercise 7 - Write the code necessary to sum up the result of c times c transposed. Answer should be 261
-
-# Exercise 8 - Write the code necessary to determine the product of c times c transposed. Answer should be 131681894400.
+mul = cc * d
+mul
 
 
-# In[ ]:
+# In[207]:
+
+
+# Exercise 7 - Write the code necessary to sum up the result of c times c transposed. 
+# Answer should be 261
+mul.sum()
+
+
+# In[204]:
+
+
+# Exercise 8 - Write the code necessary to determine the product of c times c transposed. 
+# Answer should be 131681894400.
+np.prod(mul)
+
+
+# In[209]:
 
 
 ## Setup 4
@@ -457,23 +468,82 @@ d = [
     [60, 45, -45, 90, -45, 180]
 ]
 
-# Exercise 1 - Find the sine of all the numbers in d
+d = np.array(d)
+print(type(d))
 
-# Exercise 2 - Find the cosine of all the numbers in d
+
+# In[210]:
+
+
+# Exercise 1 - Find the sine of all the numbers in d
+np.sin(d)
+
+
+# In[214]:
+
+
+np.cos(d)
+
+
+# In[215]:
+
 
 # Exercise 3 - Find the tangent of all the numbers in d
 
+np.tan(d)
+
+
+# In[216]:
+
+
 # Exercise 4 - Find all the negative numbers in d
+d[d < 0]
+
+
+# In[217]:
+
 
 # Exercise 5 - Find all the positive numbers in d
+d[d > 0]
+
+
+# In[220]:
+
 
 # Exercise 6 - Return an array of only the unique numbers in d.
+np.unique(d)
+
+
+# In[225]:
+
 
 # Exercise 7 - Determine how many unique numbers there are in d.
+np.unique(d, return_counts = True)
+
+
+# In[227]:
+
 
 # Exercise 8 - Print out the shape of d.
+d.shape
+
+
+# In[233]:
+
 
 # Exercise 9 - Transpose and then print out the shape of d.
+np.transpose(d).shape
+
+
+# In[235]:
+
 
 # Exercise 10 - Reshape d into an array of 9 x 2
+d.reshape(9,2)
+
+
+# In[ ]:
+
+
+
 
