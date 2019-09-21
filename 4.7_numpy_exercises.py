@@ -374,7 +374,7 @@ bb.tolist()
 bb.reshape(6,1)
 
 
-# In[ ]:
+# In[195]:
 
 
 ## Setup 3
@@ -383,17 +383,62 @@ c = [
     [4, 5, 6],
     [7, 8, 9]
 ]
+cc = np.array(c)
+print(type(cc))
 
 # HINT, you'll first need to make sure that the "c" variable is a numpy array prior to using numpy array methods.
 # Exercise 1 - Find the min, max, sum, and product of c.
+print("Smallest number is: {}".format(cc.min()))
+print("Largest number is: {}".format(cc.max()))
+print("The sum is: {}".format(cc.sum()))
+print("Multiply all, the product is: {}".format(np.prod(cc)))
+
+
+# In[187]:
+
 
 # Exercise 2 - Determine the standard deviation of c.
+print("Standard deviation = {}".format(cc.std()))
+
+
+# In[188]:
+
 
 # Exercise 3 - Determine the variance of c.
+# sum(x-u)^2/n = variance
+# sqrt(variance)
+print("Variance is: {}".format(cc.var()))
+
+
+# In[191]:
+
+
+import math
+x = math.sqrt(6.6666)
+x
+
+
+# In[197]:
+
 
 # Exercise 4 - Print out the shape of the array c
 
+cc.shape
+
+
+# In[ ]:
+
+
 # Exercise 5 - Transpose c and print out transposed result.
+
+
+# In[186]:
+
+
+
+
+
+
 
 # Exercise 6 - Multiply c by the c-Transposed and print the result.
 
