@@ -51,11 +51,35 @@ df["mileage_difference"] = df["hwy"] - df["cty"]
 df.head()
 np.count_nonzero(df["mileage_difference"]) # also 234, validated all hwy mileage better than cty
 
-# On average, which manufacturer has the best miles per gallon?
+# On average, which manufacturer has the best miles per gallon? # Honda
 
 df.groupby('manufacturer', as_index = True).agg({"cty":"mean", "hwy":"mean"}).sort_values(by = 'hwy',ascending=False)
 
 
-How many different manufacturers are there?
-How many different models are there?
-Do automatic or manual cars have better miles per gallon?
+# How many different manufacturers are there? # 15
+df['manufacturer'].unique() # list all the unique manufacturer
+df['manufacturer'].nunique() # list the number of unique ones
+
+# How many different models are there? # 38
+df.groupby('manufacturer')['model'].nunique()
+# Do automatic or manual cars have better miles per gallon? # not really
+
+# pivot 
+# first df.groupby(['col1', 'col2'...])
+# .size() > return count of each subset
+# .mean() or others (ex:.max(), .min()) follow by['the col you want to calc with']
+# .sort_values(seems like sorting will auto based on the calc, ascending = True/False)
+
+# group by manufacturer, trans > take the average of highway mpg
+group_trans = df.groupby(["manufacturer", "trans"]).mean()['hwy'].sort_values(ascending=False) 
+group_trans
+group_trans.plot(kind='barh', stacked=True, figsize=[32,12], colormap='winter')
+
+# group by manufacturer, trans > take the average of highway mpg
+group_trans2 = df.groupby("trans").mean()['hwy'].sort_values(ascending=False)
+group_trans2
+group_trans2.plot(kind='barh', stacked=True, figsize=[16,6], colormap='winter')
+
+
+fig, ax = plt.bar(x = 'trans', y = 'hwy',figsize=(15,7))
+df.groupby(['manufacturer','trans']).mean()['hwy'].plot(ax=ax)

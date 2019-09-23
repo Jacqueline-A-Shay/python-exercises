@@ -285,6 +285,9 @@ large and multi-dimensional arrays
 create a numpy array by passing a list to the np.array
 Referencing elements in numpy arrays at it's most basic is the same as referencing elements in Python lists.
 
+vectorization
+normal py - need looping over the list
+type > ndarray # n-dimensional
 
 a = np.array([1, 2, 3])
 >>> a 
@@ -421,3 +424,296 @@ min: 1, max: 4, length = 7 -- [1.  1.5  2.  2.5  3.  3.5  4.]
 .sum
 .mean
 .std
+
+b = [
+    [3, 4, 5],
+    [6, 7, 8]
+]
+summ = sum(b[0]) + sum(b[1])
+num = len(b[0]) + len(b[1])
+avg = summ/num
+print(avg)
+
+
+########################################## Pandas #######################################
+Series = 1D
+Dataframe = 2D
+
+import pandas as pd
+
+series = pd.Series([100, 43, 26, 17]) # from a list or numpy array
+type(series) >> pandas.core.series.Series
+
+series # contain: index (0-3)/ datatype (int64) / name
+series.name = 'My Numbers'
+series
+>>
+0    100
+1     43
+2     26
+3     17
+Name: My Numbers, dtype: int64 # can also be float64, object (ex: list of strings)
+
+## Vectorized Operations
+pandas series are vectorized by default, 
+ex: we can easily use the basic arithmatic operators to manipulate every element in the series
+
+series + 1 # or -,*,/
+
+0    101
+1     44
+2     27
+3     18
+Name: My Numbers, dtype: int64
+
+Comparison operators
+
+series == 17
+
+0    False
+1    False
+2    False
+3     True
+Name: My Numbers, dtype: bool
+
+series > 40
+
+0     True
+1     True
+2    False
+3    False
+Name: My Numbers, dtype: bool
+
+
+Series method
+(series < 0).any() # return T/F any negative values?
+(series > 0).all() # return T/F if all are...
+
+pd.Series(['a', 'b', 'a', 'c', 'b', 'a', 'd', 'a']).value_counts()
+
+vowels = list('aeiou')
+letters = list('abcdefghijk')
+letters_series = pd.Series(letters)
+letters_series.isin(vowels) # if in a set or not
+
+count sum mean median min max mode abs std quantile cumsum cummax cummin (cumulative sum, max, min)
+{
+    'count': series.count(),
+    'sum': series.sum(),
+    'mean': series.mean()
+}
+
+
+.apply method - apply the function to each element
+reference that function when we call .apply
+
+we are not calling the function
+we are passing the even_or_odd function itself to .apply method, 
+which pandas will then call on every element of the series.
+
+def even_or_odd(n):
+    '''
+    A function that takes a number and returns a string indicating whether the passed number is even or odd.
+
+    >>> even_or_odd(3)
+    'odd'
+    >>> even_or_odd(2)
+    'even'
+    '''
+    if n % 2 == 0:
+        return 'even'
+    else:
+        return 'odd'
+
+series.apply(even_or_odd)
+
+0    even
+1     odd
+2    even
+3     odd
+Name: My Numbers, dtype: object
+
+
+series.apply(lambda n: 'even' if n % 2 == 0 else 'odd')
+
+0    even
+1     odd
+2    even
+3     odd
+Name: My Numbers, dtype: object
+
+vectorize string manipulation
+
+strings = ['hello', 'Codeup', 'stUdenTs']
+string_series = pd.Series(strings)
+string_series.str.lower()
+
+0       hello
+1      codeup
+2    students
+dtype: object
+
+use a series of boolean values to subset a series
+series[series > 40]
+
+vowels = list('aeiou')
+letters_series[letters_series.isin(vowels)]
+
+
+cut function from pandas - numerical values >>> discrete bins
+s = pd.Series(list(range(15)))
+s
+
+pd.cut(s, 3)
+
+0     (-0.014, 4.667]
+1     (-0.014, 4.667]
+2     (-0.014, 4.667]
+3     (-0.014, 4.667]
+4     (-0.014, 4.667]
+5      (4.667, 9.333]
+6      (4.667, 9.333]
+7      (4.667, 9.333]
+8      (4.667, 9.333]
+9      (4.667, 9.333]
+10      (9.333, 14.0]
+11      (9.333, 14.0]
+12      (9.333, 14.0]
+13      (9.333, 14.0]
+14      (9.333, 14.0]
+dtype: category
+Categories (3, interval[float64]): [(-0.014, 4.667] < (4.667, 9.333] < (9.333, 14.0]]
+
+# plot from pandas 
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+series.plot()
+series.plot.hist()
+
+# The .value_counts method returns a series, so we can call .plot on the resulting series
+pd.Series(['a', 'b', 'a', 'c', 'b', 'a', 'd', 'a']).value_counts().plot.bar()
+
+
+
+### pandas dataframe
+# create data
+
+import pandas as pd
+import numpy as np
+
+np.random.seed(123)
+
+students = ['Sally', 'Jane', 'Suzie', 'Billy', 'Ada', 'John', 'Thomas',
+            'Marie', 'Albert', 'Richard', 'Isaac', 'Alan']
+
+# randomly generate scores for each student for each subject
+# note that all the values need to have the same length here
+math_grades = np.random.randint(low=60, high=100, size=len(students))
+english_grades = np.random.randint(low=60, high=100, size=len(students))
+reading_grades = np.random.randint(low=60, high=100, size=len(students))
+
+df = pd.DataFrame({'name': students,
+                   'math': math_grades,
+                   'english': english_grades,
+                   'reading': reading_grades})
+
+type(df) # pandas.core.frame.DataFrame
+
+print(df) # nice organized tabular form
+       name  math  english  reading
+0     Sally    62       85       80
+1      Jane    88       79       67
+2     Suzie    94       74       95
+3     Billy    98       96       88
+4       Ada    77       92       98
+5      John    79       76       93
+6    Thomas    82       64       81
+7     Marie    93       63       90
+8    Albert    92       62       87
+9   Richard    69       80       94
+10    Isaac    92       99       93
+11     Alan    92       62       72
+
+df.describe() 
+# get descriptive stat
+# count, mean, std, min, 25-50-75%, max
+
+# important dataframe "attributes"
+# ex: df.dtypes will print out data type of each column 
+.dtypes: the data type of each column # no adding parentheses!!!
+shape: the number of rows and columns in the dataframe
+columns: the list of column names
+index: the labels for each row (usually an autogenerated number)
+
+df.index # RangeIndex(start=0, stop=12, step=1)
+df.columns = [col.upper() for col in df.columns] # can change name or format of col name
+
+### subset
+df[['name', 'math']] # access multiple col
+
+df.math # access 1 col ### PREFERED WAY!
+df['math'] # but this way is required if the name of the column is not a valid python identifier
+
+df.drop(columns=['english', 'reading'])
+df.rename(columns={'name': 'student'}) # change column name of 'name' to 'student'
+df.drop(columns=['english', 'reading']).rename(columns={'name': 'student'}) # chain the above actions into 1 
+
+df['passing_math'] = df.math > 70 # create new column containing the math > 70 result (Bool)
+df.assign(passing_english=df.english >= 70) # create new df instead of change old df
+
+
+
+# accessing ROWs
+df.head() # first 5
+df.tail()  # bottom 5
+df.sample() # randomly pick the designamted number of rows # df.sample(4) will pick 4 randomly selected rows from df
+
+df.math < 80 # return bool, with math score < 80 printing True
+df[df.math < 80] # will return the entire row containing ppl with math score lower than 80
+
+	name	    math    english reading
+0	Sally	    62	    85	    80
+4	Ada	        77	    92	    98
+5	John	    79	    76	    93
+9	Richard	    69	    80	    94
+
+df.sort_values(by='english')
+
+# most df methods create a new df, so chaining is common
+
+# find the name of the student with the lowest english grade above a 90
+# .name: extract just the name part of the record
+df[df.english > 90].sort_values(by='english').head(1).name
+
+# connect SQL
+Whenever we want to connect to a database from our python code  
+we will need a driver, a bit of software that handles the details of the database connection.
+## software: mysqlclient
+create_engine function from the sqlalchemy module 
+to create an engine that pandas can use to execute a query and construct a dataframe
+
+from sqlalchemy import create_engine
+
+from env import user, password, host
+
+url = 'mysql+pymysql://{}:{}@{}/fruits_db'.format(user, password, host)
+
+dbc = create_engine(url)
+
+df = pd.read_sql('SELECT * FROM fruits', dbc)
+
+# JSON
+data = '''
+[
+  {"name": "apple", "quantity": 3},
+  {"name": "banana", "quantity": 4},
+  {"name": "cantelope", "quantity": 16},
+  {"name": "dragonfruit", "quantity": 1},
+  {"name": "elderberry", "quantity": 2}
+]
+'''.strip()
+
+with open('fruits.json', 'w') as f:
+    f.write(data)
+pd.read_json('fruits.json')
