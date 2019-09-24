@@ -83,3 +83,44 @@ group_trans2.plot(kind='barh', stacked=True, figsize=[16,6], colormap='winter')
 
 fig, ax = plt.bar(x = 'trans', y = 'hwy',figsize=(15,7))
 df.groupby(['manufacturer','trans']).mean()['hwy'].plot(ax=ax)
+
+
+
+# Getting data from SQL databases
+create_engine function 
+from sqlalchemy module 
+to create an engine that pandas can use to execute a query and construct a dataframe.
+
+Create engine object
+- specify a connection url. 
+
+a specially formatted url that describes how to connect to a database. 
+general - 
+protocol://[user[:password]@]hostname/[database_name] 
+
+from sqlalchemy import create_engine
+
+from env import user, password, host
+
+url = 'mysql+pymysql://{}:{}@{}/fruits_db'.format(user, password, host)
+
+dbc = create_engine(url)
+
+df = pd.read_sql('SELECT * FROM fruits', dbc)
+
+
+# Create a function named get_db_url. 
+def get_db_url(username, hostname, password, database):
+    url = 'mysql+pymysql://{}:{}@{}/fruits_db'.format(user, password, host)
+    return url
+
+# It should accept a username, hostname, password, and database name 
+# and return a url formatted like in the examples in this lesson.
+# 
+# Use your function to obtain a connection to the employees database.
+
+# Read the employees and titles tables into two separate dataframes
+# Visualize the number of employees with each title.
+# Visualize how frequently employees change titles.
+# Use the .join method to join the employees and titles dataframes together
+# For each title, find the hire date of the employee that was hired most recently with that title.

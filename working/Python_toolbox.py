@@ -281,6 +281,13 @@ for feature in dataset:
 
 
 ##################################### NUMPY ###########################################
+b.sum() # calling sum from the object (method)
+np.sum(b) # calling sum from the class (function)
+
+
+
+
+
 large and multi-dimensional arrays
 create a numpy array by passing a list to the np.array
 Referencing elements in numpy arrays at it's most basic is the same as referencing elements in Python lists.
@@ -365,6 +372,13 @@ my_array >= 0  == [False  True  True  True]
 my_array < 10  == [ True  True  True False]
 
 # select a certain subset from an array
+
+a = np.array([4, 10, 12, 23, -2, -1, 0, 0, 0, -6, 3, -7])
+negative = a [a < 0]
+len(negative)
+# a > 0 -> get an array of bool
+
+
 my_array[my_array > 0]
 array([ 3, 16])
 
@@ -457,6 +471,8 @@ Name: My Numbers, dtype: int64 # can also be float64, object (ex: list of string
 ## Vectorized Operations
 pandas series are vectorized by default, 
 ex: we can easily use the basic arithmatic operators to manipulate every element in the series
+
+apply an operation/ function to every item in a vector/ arrays, without looping
 
 series + 1 # or -,*,/
 
