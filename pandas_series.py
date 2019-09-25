@@ -7,7 +7,7 @@ import pandas as pd
 fruits = pd.Series(["kiwi", "mango", "strawberry", "pineapple", "gala apple", "honeycrisp apple", "tomato", "watermelon", "honeydew", "kiwi", "kiwi", "kiwi", "mango", "blueberry", "blackberry", "gooseberry", "papaya"])
 type(fruits)
 
-fruits.describe()
+fruits.describe() # overview of total dataset
 
 count       17
 unique      13
@@ -23,7 +23,6 @@ fruits.nunique() # total 13 different unique fruits
 freq = fruits.value_counts()
 freq
 
-# how many are each fruit?
 index = pd.Index(fruits)
 index.value_counts()
 
@@ -42,32 +41,37 @@ papaya              1
 pineapple           1
 dtype: int64
 
-# most freq occuring fruit
+# most freq occuring fruit # kiwi
 fruits.mode()
+
 most_freq = freq.max()
 most_freq
 
 freq = fruits.value_counts()
 freq
-freq.idmax() ###????????
-##### AttributeError: 'Series' object has no attribute 'idmax'
-
-kiwi
+freq.idxmax() 
 
 # least freq occuring fruit # anything other than kiwi or mango
 lowest_freq = fruits.value_counts().min()
+lowest_freq # this will only list the lowest number, not even the name of the fruit
+
 frequencies = fruits.value_counts()
-frequencies[frequencies == lowest_freq] 
+frequencies[frequencies == lowest_freq] # this will provide all the ones having least count
 
 # get the longest string from the fruits series
-fruits.map(len).max() # 16
-
+fruits[fruits.map(len).idxmax()] # 16
 
 fruit_names = fruits.unique()
 fruit_names = pd.Series(fruit_names)
+fruit_names #list of names
+
 len_of_longest = fruit_names.str.len().max()
-id_of_longest = fruit_names.str.len().idmax()
+len_of_longest #length of longest name
+
+id_of_longest = fruit_names.str.len().idxmax()
+id_of_longest 
 longest_string = fruit_names[id_of_longest]
+longest_string
 
 
 # Find the fruit(s) with 5 or more letters in the name.
@@ -78,32 +82,41 @@ fruits[more_than_five]
 fruits.str.capitalize()
 
 # Count the letter "a" in all the fruits (use string vectorization) # 10
-fruits.str.contains('a').sum()
-
 counts_of_a = fruit_names.str.count("a")
 list(zip(fruit_names, counts_of_a))
-
-for i, fruit in enumerate(fruit_names):
-    print(fruit, "has", count_of_a[i], "number of 'a' characters")
-
-
-
 
 
 
 # Output the number of vowels in each and every fruit.
 import re
-fruits.str.extractall('(?i)(?P<vowels>[aeiou])').groupby(level=0).count()
+df = fruits.str.extractall('(?i)(?P<vowels_count>[aeiou])').groupby(level=0).count()
+df['fruit'] = fruits
+df.drop_duplicates()
+# df.drop(['fruit_names'], axis = 1)
+
+def count_vowels(fruits):
+    count = 0
+    vowels = 'aeiou'
+    for i in fruits:
+        if vowels in i:
+            count += 1
+        return count
+
+list(zip(fruits.uniqe()),pd.Series(fruits.unique()).apply(count_vowels)))
+
+# this works
+print(fruits[fruits.apply(lambda x: sum([1 for xc in x if xc.lower() in 'aeiou'])).idxmax()])
 
 # Use the .apply method and a lambda function to find the fruit(s) containing two or more "o" letters in the name.
 fruits[fruits.apply(lambda x: x.count('o') >= 2)]
 
 # Write the code to get only the fruits containing "berry" in the name
 fruits[fruits.apply(lambda x: 'berry' in x)]
+fruits[fruits.str.contains("berry")]
 # Write the code to get only the fruits containing "apple" in the name
 fruits[fruits.apply(lambda x: 'apple' in x)]
 # Which fruit has the highest amount of vowels?
-
+fruits[fruits.apply(count_vowels).idxmax()]
 
 mon = pd.Series(['$796,459.41', '$278.60', '$482,571.67', '$4,503,915.98', '$2,121,418.3', '$1,260,813.3', '$87,231.01', '$1,509,175.45', '$4,138,548.00', '$2,848,913.80', '$594,715.39', '$4,789,988.17', '$4,513,644.5', '$3,191,059.97', '$1,758,712.24', '$4,338,283.54', '$4,738,303.38', '$2,791,759.67', '$769,681.94', '$452,650.23'])
 mon = mon.str.strip('$')
@@ -162,16 +175,24 @@ exam.median()  # 79
 
 # histogram
 import numpy as np
-counts, bins = np.histogram(exam)
+exam, exam_bin = np.histogram(exam)
 plt.hist(bins[:-1], bins, weights=counts)
 
 exam.hist(gird = False)
 
 # convert to letter grade
-def convert(exam):
-    letter = [for e in exam if e >= 90 "A" elif e >= 80 "B" elif e >= 70 "C" elif >= 60 "D" else "F"]
-    return letter
- exam.apply(convert(exam))
+import matplotlib.pyplot as plt
+letter = pd.cut(exam, bins = [0, 60, 70, 80, 90,100], labels=["F", "D", "C","B","A"])
+letter
+bin = pd.cut(exam, [0, 60, 70, 80, 90,100])
+bin
+
+h = exam.value_counts(sort = False, bins= [0, 60, 70, 80, 90,100])
+h
+
+label = ["F", "D", "C","B","A"]
+h.plot(kind = 'barh', figsize = (5,5), yticks = ('F','D','C','B','A'))
+
 
 # Write the code necessary to implement a curve. I.e. that grade closest to 100 should be converted to a 100, 
 # and that many points should be given to every other score as well.        
@@ -194,6 +215,8 @@ count_val = nhand.value_counts()
 count_val
 
 count_val.max() # 13 (y)
+count_val[count_val == count_val.max()] #mask
+
 count_val.min() # 4 (l)
 
 # How many vowels are in the list? #34

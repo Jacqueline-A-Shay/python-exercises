@@ -6,12 +6,6 @@ from pydataset import data
 df = data('mpg') # load the dataset and store it in a variable
 data('mpg', show_doc=True) # view the documentation for the dataset
 
-# Use pandas to convert the following list to a numeric series:
-['$796,459.41', '$278.60', '$482,571.67', '$4,503,915.98', '$2,121,418.3', '$1,260,813.3', '$87,231.01', '$1,509,175.45', '$4,138,548.00', '$2,848,913.80', '$594,715.39', '$4,789,988.17', '$4,513,644.5', '$3,191,059.97', '$1,758,712.24', '$4,338,283.54', '$4,738,303.38', '$2,791,759.67', '$769,681.94', '$452,650.23']
-series = pd.Series(['$796,459.41', '$278.60', '$482,571.67', '$4,503,915.98', '$2,121,418.3', '$1,260,813.3', '$87,231.01', '$1,509,175.45', '$4,138,548.00', '$2,848,913.80', '$594,715.39', '$4,789,988.17', '$4,513,644.5', '$3,191,059.97', '$1,758,712.24', '$4,338,283.54', '$4,738,303.38', '$2,791,759.67', '$769,681.94', '$452,650.23'])
-print(type(series))
-
-
 # Use the mpg dataset to practice pandas
 
 # How many rows and columns are there?
@@ -83,6 +77,57 @@ group_trans2.plot(kind='barh', stacked=True, figsize=[16,6], colormap='winter')
 
 fig, ax = plt.bar(x = 'trans', y = 'hwy',figsize=(15,7))
 df.groupby(['manufacturer','trans']).mean()['hwy'].plot(ax=ax)
+
+from pydataset import data
+
+mam = data('Mammals')
+mam.shape # (107, 4)
+mam.dtypes
+
+# weight      float64
+# speed       float64
+# hoppers        bool
+# specials       bool
+# dtype: object
+
+mam.describe()
+
+#             weight       speed
+# count   107.000000  107.000000
+# mean    278.688178   46.208411
+# std     839.608269   26.716778
+# min       0.016000    1.600000
+# 25%       1.700000   22.500000
+# 50%      34.000000   48.000000
+# 75%     142.500000   65.000000
+# max    6000.000000  110.000000
+
+mam.info()
+
+# <class 'pandas.core.frame.DataFrame'>
+# Int64Index: 107 entries, 1 to 107
+# Data columns (total 4 columns):
+# weight      107 non-null float64
+# speed       107 non-null float64
+# hoppers     107 non-null bool
+# specials    107 non-null bool
+# dtypes: bool(2), float64(2)
+# memory usage: 2.7 KB
+
+#the specie that runs the fastes has weight of 55
+mam.sort_values(by='speed',ascending=False) 
+# overal percentage of specials
+mam['specials'].value_counts(normalize=True) * 100
+# How many animals are hoppers that are above the median speed? What percentage is this?
+is_hopper = mam[mam['hoppers'] == True]
+is_hopper
+median = mam['speed'].median()
+total = mam.count()
+total
+hs = is_hopper[is_hopper["speed"] > median]
+hs
+percentage = hs.shape[0]/mam.shape[0]
+print('percentage of hoppers running faster than median speed is: ', percentage)
 
 
 
