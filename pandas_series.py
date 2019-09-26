@@ -211,8 +211,9 @@ nhand = [h for h in hand]
 nhand = pd.Series(nhand)
 nhand
 
-count_val = nhand.value_counts()
+count_val = nhand.value_counts(sort = True)
 count_val
+print("There are {} items in count_val".format(len(count_val)))
 
 count_val.max() # 13 (y)
 count_val[count_val == count_val.max()] #mask

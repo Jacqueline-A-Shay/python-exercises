@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[6]:
-
-
 # use the following array to solve questions
 import numpy as np
 # np.count_nonzero
