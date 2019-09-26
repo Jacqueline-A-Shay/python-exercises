@@ -29,26 +29,34 @@ dtype: object
 df.head()
 
 # Do any cars have better city mileage than highway mileage? NO
-df["ctymi_better"] = np.where( df["cty"] > df["hwy"] )
-print(df_ctymi_better)
 df["hwymi_better"] = df.apply(lambda x : x["hwy"] if x["cty"] < x["hwy"] else "", axis=1)
 df
 df.sort_values(by="hwymi_better", ascending=False)
 
+df["ctymi_better"] = df.apply(lambda x : x["cty"] if x["cty"] > x["hwy"] else "", axis=1)
+df
+(df['ctymi_better'].values != '').sum()
+print("How many cars have better city performance? {}".format(((df['ctymi_better'].values != '').sum())))
+print("How many cars perform better on highway than city? {}".format((df['hwymi_better'][df['hwymi_better'] != ''].count())))
+
 # series nonzero method will return an array containing the nonzero items
-np.count_nonzero(df["ctymi_better"]) # 0 
-np.count_nonzero(df["hwymi_better"]) # 234
-df["hwymi_better"].nonzero()
+print("How many cars have better city performance? {}".format(np.count_nonzero(df["ctymi_better"])))# 0 
+print("How many cars perform better on highway than city? {}".format(np.count_nonzero(df["hwymi_better"]))) # 234
+
+better_mi = df['cty'] > df['hwy']
+df[better_mi]
 
 # Create a column named mileage_difference this column should contain the difference between highway and city mileage for each car.
 df["mileage_difference"] = df["hwy"] - df["cty"]
 df.head()
 np.count_nonzero(df["mileage_difference"]) # also 234, validated all hwy mileage better than cty
+df.sort_values(by = 'mileage_difference', ascending=False).head(2)
 
 # On average, which manufacturer has the best miles per gallon? # Honda
 
-df.groupby('manufacturer', as_index = True).agg({"cty":"mean", "hwy":"mean"}).sort_values(by = 'hwy',ascending=False)
+df.groupby('manufacturer', as_index = True).agg({"cty":"mean", "hwy":"mean"}).sort_values(by = 'hwy',ascending=False).head(1)
 
+print(df[df['class']=='compact'].sort_values(by = 'hwy', ascending = True).head(1))
 
 # How many different manufacturers are there? # 15
 df['manufacturer'].unique() # list all the unique manufacturer
@@ -116,8 +124,10 @@ mam.info()
 
 #the specie that runs the fastes has weight of 55
 mam.sort_values(by='speed',ascending=False) 
+mam[['weight','speed']].sort_values(by='speed',ascending=False).head(1)
 # overal percentage of specials
 mam['specials'].value_counts(normalize=True) * 100
+(mam.specials==True).mean()*100
 # How many animals are hoppers that are above the median speed? What percentage is this?
 is_hopper = mam[mam['hoppers'] == True]
 is_hopper
@@ -126,10 +136,11 @@ total = mam.count()
 total
 hs = is_hopper[is_hopper["speed"] > median]
 hs
-percentage = hs.shape[0]/mam.shape[0]
+percentage = round((hs.shape[0]/mam.shape[0] *100),2)
 print('percentage of hoppers running faster than median speed is: ', percentage)
 
-
+num_animals = sum((mam.hoppers == True) & (mam.speed > mam.speed.median()))
+print(round(num_animals/len(mam)*100,2))
 
 # Getting data from SQL databases
 create_engine function 
