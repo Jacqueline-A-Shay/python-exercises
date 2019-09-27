@@ -65,7 +65,62 @@ mpg[["trans","trans_app"]] = mpg.trans.str.split("(",expand = True) # pre-proces
 mpg
 
 mpg.assign(avg_hwy_mileage_by_transmission = mpg.groupby("trans").hwy.transform("mean")).sort_values(by=['model','trans'])
+
+
 # The transform method can be used to produce a series with the same length of the original dataframe 
 # where each value represents the aggregation from the grouped by subgroup. 
 # For example, if we wanted to know the average math grade for each classroom, 
 # and add this data back to our original dataframe
+
+
+# Joining and Merging
+
+# Use USER & ROLE dataframe -
+
+# What happens if you drop the foreign keys from the dataframes and try to merge them?
+# won't be able to join, because there's no reference
+
+# What do you think a right join would look like? An outer join? 
+
+users = pd.DataFrame({
+    'id': [1, 2, 3, 4, 5, 6],
+    'name': ['bob', 'joe', 'sally', 'adam', 'jane', 'mike'],
+    'role_id': [1, 2, 3, 3, np.nan, np.nan]
+})
+users
+
+0	1	bob	1.0
+1	2	joe	2.0
+2	3	sally	3.0
+3	4	adam	3.0
+4	5	jane	NaN
+5	6	mike	NaN
+
+roles = pd.DataFrame({
+    'id': [1, 2, 3, 4],
+    'name': ['admin', 'author', 'reviewer', 'commenter']
+})
+roles
+
+0	1	admin
+1	2	author
+2	3	reviewer
+3	4	commenter
+
+# default = left join
+norm_left = users.join(roles, lsuffix='_role_id', rsuffix='_id')
+norm_left
+
+# right join, some users without role_id info are gone
+right_join = users.join(roles, how = 'right', lsuffix='_role_id', rsuffix='_id')
+right_join
+
+
+0	1	bob	1.0	1	admin
+1	2	joe	2.0	2	author
+2	3	sally	3.0	3	reviewer
+3	4	adam	3.0	4	commen
+
+# outer join, include everything, no directional relationship
+outer_join = users.join(roles, how = 'outer', lsuffix='_role_id', rsuffix='_id')
+outer_join
