@@ -4,19 +4,29 @@ mpg = data('mpg')
 mpg
 
 # On average, which manufacturer has the best miles per gallon?
+
+# method 1:
 extract = mpg.groupby(mpg.manufacturer)[['hwy']].mean().sort_values(by='hwy', ascending = False)
 extract
 
 indexNamesArr = extract.index.values # retrieve the index of manufacturer
 indexNamesArr
 print("The manufacturer producing the best mpg car is: {}".format(indexNamesArr[0])) 
+
+# method 2:
+extract = mpg.groupby(mpg.manufacturer).hwy.agg('mean') + mpg.groupby(mpg.manufacturer).cty.agg('mean')
+avg_hwy_cty = extract / 2
+print("The manufacturer producing the best mpg car is: {}".format(avg_hwy_cty.idxmax()))
 # The manufacturer producing the best mpg car is: honda 
 
-# How many different manufacturers are there?
+
+
+
+# How many different manufacturers are there?   
 print("There are {} manufacturers in the dataset".format(mpg.manufacturer.nunique()))
 # There are 15 manufacturers in the dataset
 
-# # How many different models are there?
+# # How many different models are there?            ##### need to get Ryan's soln
 model_count = mpg.groupby(["manufacturer","model"])["model"].count()
 model_count
 manufacturer  model                 
@@ -67,6 +77,9 @@ mpg
 mpg.assign(avg_hwy_mileage_by_transmission = mpg.groupby("trans").hwy.transform("mean")).sort_values(by=['model','trans'])
 
 
+
+
+
 # The transform method can be used to produce a series with the same length of the original dataframe 
 # where each value represents the aggregation from the grouped by subgroup. 
 # For example, if we wanted to know the average math grade for each classroom, 
@@ -112,6 +125,7 @@ norm_left = users.join(roles, lsuffix='_role_id', rsuffix='_id')
 norm_left
 
 # right join, some users without role_id info are gone
+# left or right meaning which way are you tolerating nulls
 right_join = users.join(roles, how = 'right', lsuffix='_role_id', rsuffix='_id')
 right_join
 
@@ -124,3 +138,37 @@ right_join
 # outer join, include everything, no directional relationship
 outer_join = users.join(roles, how = 'outer', lsuffix='_role_id', rsuffix='_id')
 outer_join
+
+# Getting data from SQL databases
+# Getting data from SQL databases
+# Create a function, get_db_url. 
+# accept a username, hostname, password, and database name 
+# return a url to for accessing database in SQL server
+
+def get_db_url(username, password, host, database_name):
+    url = f'mysql+pymysql://{user}:{password}@{host}/{database_name}'
+    return url
+
+# Use your function to obtain a connection to the employees database.
+def get_db_url():
+    url = f'mysql+pymysql://{user}:{password}@{host}/{database_name}'
+    return url
+from env import host, user, password
+database_name = input("Input desired database name: ")
+query = input("Key in the query ")
+df = pd.read_sql(query,get_db_url())
+df.head(5)
+
+# Once you have successfully run a query:
+# Intentionally make a typo in the database url. What kind of error message do you see?
+
+# Intentionally make an error in your SQL query. What does the error message look like?
+# > program error will specify "You have an error in your SQL syntax;"
+
+# Read the employees and titles tables into two separate dataframes
+
+# Visualize the number of employees with each title.
+# Join the employees and titles dataframes together.
+# Visualize how frequently employees change titles.
+# For each title, find the hire date of the employee that was hired most recently with that title.
+# Write the code necessary to create a cross tabulation of the number of titles by department. (Hint: this will involve a combination of SQL and python/pandas code)
