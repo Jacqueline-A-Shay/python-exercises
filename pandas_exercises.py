@@ -1,332 +1,303 @@
 import pandas as pd
-from pydataset import data
-mpg = data('mpg')
-mpg
-
-# On average, which manufacturer has the best miles per gallon?
-
-# method 1:
-extract = mpg.groupby(mpg.manufacturer)[['hwy']].mean().sort_values(by='hwy', ascending = False)
-extract
-
-indexNamesArr = extract.index.values # retrieve the index of manufacturer
-indexNamesArr
-print("The manufacturer producing the best mpg car is: {}".format(indexNamesArr[0])) 
-
-# method 2:
-extract = mpg.groupby(mpg.manufacturer).hwy.agg('mean') + mpg.groupby(mpg.manufacturer).cty.agg('mean')
-avg_hwy_cty = extract / 2
-print("The manufacturer producing the best mpg car is: {}".format(avg_hwy_cty.idxmax()))
-# The manufacturer producing the best mpg car is: honda 
-
-
-
-
-# How many different manufacturers are there?   
-print("There are {} manufacturers in the dataset".format(mpg.manufacturer.nunique()))
-# There are 15 manufacturers in the dataset
-
-# # How many different models are there?            ##### need to get Ryan's soln
-model_count = mpg.groupby(["manufacturer","model"])["model"].count()
-model_count
-manufacturer  model                 
-audi          a4                         7
-              a4 quattro                 8
-              a6 quattro                 3
-chevrolet     c1500 suburban 2wd         5
-              corvette                   5
-              k1500 tahoe 4wd            4
-              malibu                     5
-dodge         caravan 2wd               11
-              dakota pickup 4wd          9
-              durango 4wd                7
-              ram 1500 pickup 4wd       10
-ford          expedition 2wd             3
-              explorer 4wd               6
-              f150 pickup 4wd            7
-              mustang                    9
-honda         civic                      9
-hyundai       sonata                     7
-              tiburon                    7
-jeep          grand cherokee 4wd         8
-land rover    range rover                4
-lincoln       navigator 2wd              3
-mercury       mountaineer 4wd            4
-nissan        altima                     6
-              maxima                     3
-              pathfinder 4wd             4
-pontiac       grand prix                 5
-subaru        forester awd               6
-              impreza awd                8
-toyota        4runner 4wd                6
-              camry                      7
-              camry solara               7
-              corolla                    5
-              land cruiser wagon 4wd     2
-              toyota tacoma 4wd          7
-volkswagen    gti                        5
-              jetta                      9
-              new beetle                 6
-              passat                     7
-Name: model, dtype: int64
-
-# Do automatic or manual cars have better miles per gallon?
-mpg[["trans","trans_app"]] = mpg.trans.str.split("(",expand = True) # pre-process transmission data
-mpg
-
-mpg.assign(avg_hwy_mileage_by_transmission = mpg.groupby("trans").hwy.transform("mean")).sort_values(by=['model','trans'])
-
-
-
-
-
-# The transform method can be used to produce a series with the same length of the original dataframe 
-# where each value represents the aggregation from the grouped by subgroup. 
-# For example, if we wanted to know the average math grade for each classroom, 
-# and add this data back to our original dataframe
-
-
-# Joining and Merging
-
-# Use USER & ROLE dataframe -
-
-# What happens if you drop the foreign keys from the dataframes and try to merge them?
-# won't be able to join, because there's no reference
-
-# What do you think a right join would look like? An outer join? 
-
-users = pd.DataFrame({
-    'id': [1, 2, 3, 4, 5, 6],
-    'name': ['bob', 'joe', 'sally', 'adam', 'jane', 'mike'],
-    'role_id': [1, 2, 3, 3, np.nan, np.nan]
-})
-users
-
-0	1	bob	1.0
-1	2	joe	2.0
-2	3	sally	3.0
-3	4	adam	3.0
-4	5	jane	NaN
-5	6	mike	NaN
-
-roles = pd.DataFrame({
-    'id': [1, 2, 3, 4],
-    'name': ['admin', 'author', 'reviewer', 'commenter']
-})
-roles
-
-0	1	admin
-1	2	author
-2	3	reviewer
-3	4	commenter
-
-# default = left join
-norm_left = users.join(roles, lsuffix='_role_id', rsuffix='_id')
-norm_left
-
-# right join, some users without role_id info are gone
-# left or right meaning which way are you tolerating nulls
-right_join = users.join(roles, how = 'right', lsuffix='_role_id', rsuffix='_id')
-right_join
-
-
-0	1	bob	1.0	1	admin
-1	2	joe	2.0	2	author
-2	3	sally	3.0	3	reviewer
-3	4	adam	3.0	4	commen
-
-# outer join, include everything, no directional relationship
-outer_join = users.join(roles, how = 'outer', lsuffix='_role_id', rsuffix='_id')
-outer_join
-
-# Getting data from SQL databases
-# Getting data from SQL databases
-# Create a function, get_db_url. 
-# accept a username, hostname, password, and database name 
-# return a url to for accessing database in SQL server
-
-def get_db_url(username, password, host, database_name):
-    url = f'mysql+pymysql://{user}:{password}@{host}/{database_name}'
-    return url
-
-# Use your function to obtain a connection to the employees database.
-def get_db_url():
-    url = f'mysql+pymysql://{user}:{password}@{host}/{database_name}'
-    return url
-from env import host, user, password
-database_name = input("Input desired database name: ")
-query = input("Key in the query ")
-df = pd.read_sql(query,get_db_url())
-df.head(5)
-
-# Once you have successfully run a query:
-# Intentionally make a typo in the database url. What kind of error message do you see?
-
-# Intentionally make an error in your SQL query. What does the error message look like?
-# > program error will specify "You have an error in your SQL syntax;"
-
-# Read the employees and titles tables into two separate dataframes
-
-# Visualize the number of employees with each title.
-# Join the employees and titles dataframes together.
-# Visualize how frequently employees change titles.
-# For each title, find the hire date of the employee that was hired most recently with that title.
-# Write the code necessary to create a cross tabulation of the number of titles by department. (Hint: this will involve a combination of SQL and python/pandas code)
-
 import numpy as np
-import pandas as pd
+
+
+from pydataset import data
+df = data('mpg') # load the dataset and store it in a variable
+data('mpg', show_doc=True) # view the documentation for the dataset
+
+# Use the mpg dataset to practice pandas
+
+# How many rows and columns are there?
+print(df.shape) # (234,11)
+
+# What are the data types?
+df.dtypes
+
+manufacturer     object
+model            object
+displ           float64
+year              int64
+cyl               int64
+trans            object
+drv              object
+cty               int64
+hwy               int64
+fl               object
+class            object
+dtype: object
+df.head()
+
+# Do any cars have better city mileage than highway mileage? NO
+df["hwymi_better"] = df.apply(lambda x : x["hwy"] if x["cty"] < x["hwy"] else "", axis=1)
+df
+df.sort_values(by="hwymi_better", ascending=False)
+
+df["ctymi_better"] = df.apply(lambda x : x["cty"] if x["cty"] > x["hwy"] else "", axis=1)
+df
+(df['ctymi_better'].values != '').sum()
+print("How many cars have better city performance? {}".format(((df['ctymi_better'].values != '').sum())))
+print("How many cars perform better on highway than city? {}".format((df['hwymi_better'][df['hwymi_better'] != ''].count())))
+
+# series nonzero method will return an array containing the nonzero items
+print("How many cars have better city performance? {}".format(np.count_nonzero(df["ctymi_better"])))# 0 
+print("How many cars perform better on highway than city? {}".format(np.count_nonzero(df["hwymi_better"]))) # 234
+
+better_mi = df['cty'] > df['hwy']
+df[better_mi]
+
+# Create a column named mileage_difference this column should contain the difference between highway and city mileage for each car.
+df["mileage_difference"] = df["hwy"] - df["cty"]
+df.head()
+np.count_nonzero(df["mileage_difference"]) # also 234, validated all hwy mileage better than cty
+df.sort_values(by = 'mileage_difference', ascending=False).head(2)
+
+# On average, which manufacturer has the best miles per gallon? # Honda
+
+df.groupby('manufacturer', as_index = True).agg({"cty":"mean", "hwy":"mean"}).sort_values(by = 'hwy',ascending=False).head(1)
+
+print(df[df['class']=='compact'].sort_values(by = 'hwy', ascending = True).head(1))
+
+# How many different manufacturers are there? # 15
+df['manufacturer'].unique() # list all the unique manufacturer
+df['manufacturer'].nunique() # list the number of unique ones
+
+# How many different models are there? # 38
+df.groupby('manufacturer')['model'].nunique()
+# Do automatic or manual cars have better miles per gallon? # not really
+
+# pivot 
+# first df.groupby(['col1', 'col2'...])
+# .size() > return count of each subset
+# .mean() or others (ex:.max(), .min()) follow by['the col you want to calc with']
+# .sort_values(seems like sorting will auto based on the calc, ascending = True/False)
+
+# group by manufacturer, trans > take the average of highway mpg
+group_trans = df.groupby(["manufacturer", "trans"]).mean()['hwy'].sort_values(ascending=False) 
+group_trans
+group_trans.plot(kind='barh', stacked=True, figsize=[32,12], colormap='winter')
+
+# group by manufacturer, trans > take the average of highway mpg
+group_trans2 = df.groupby("trans").mean()['hwy'].sort_values(ascending=False)
+group_trans2
+group_trans2.plot(kind='barh', stacked=True, figsize=[16,6], colormap='winter')
+
+
+fig, ax = plt.bar(x = 'trans', y = 'hwy',figsize=(15,7))
+df.groupby(['manufacturer','trans']).mean()['hwy'].plot(ax=ax)
 
 from pydataset import data
 
-## Exercise 1
-# On average, which manufacturer has the best miles per gallon?
-# How many different manufacturers are there?
-# How many different models are there?
-# Do automatic or manual cars have better miles per gallon?
+mam = data('Mammals')
+mam.shape # (107, 4)
+mam.dtypes
 
-mpg = data('mpg')
-mpg["mpg"] = (mpg.hwy + mpg.cty) / 2
+# weight      float64
+# speed       float64
+# hoppers        bool
+# specials       bool
+# dtype: object
 
-automatic = mpg[mpg.trans.str.contains("auto")]
-manual = mpg[mpg.trans.str.contains("manual")]
+mam.describe()
 
-auto_avg = automatic.mpg.mean()
-manual_avg = manual.mpg.mean()
-print("automatic", auto_avg)
-print("manual:", manual_avg)
+#             weight       speed
+# count   107.000000  107.000000
+# mean    278.688178   46.208411
+# std     839.608269   26.716778
+# min       0.016000    1.600000
+# 25%       1.700000   22.500000
+# 50%      34.000000   48.000000
+# 75%     142.500000   65.000000
+# max    6000.000000  110.000000
 
-# On average, which manufacturer has the best miles per gallon?
-city_and_hwy = mpg.groupby("manufacturer").hwy.agg("mean") + mpg.groupby("manufacturer").cty.agg("mean")
-average_mpg = city_and_hwy / 2
-best_mpg_manufacturer = average_mpg.idxmax()
-best_mpg_manufacturer
+mam.info()
 
-# How many different manufacturers are there?
-number_of_different_manufacturers = len(mpg.manufacturer.unique())
-number_of_different_manufacturers
+# <class 'pandas.core.frame.DataFrame'>
+# Int64Index: 107 entries, 1 to 107
+# Data columns (total 4 columns):
+# weight      107 non-null float64
+# speed       107 non-null float64
+# hoppers     107 non-null bool
+# specials    107 non-null bool
+# dtypes: bool(2), float64(2)
+# memory usage: 2.7 KB
 
-# How many di fferent models are there?
-number_of_different_models = mpg.model.nunique()
-number_of_different_models
+#the specie that runs the fastes has weight of 55
+mam.sort_values(by='speed',ascending=False) 
+mam[['weight','speed']].sort_values(by='speed',ascending=False).head(1)
+# overal percentage of specials
+mam['specials'].value_counts(normalize=True) * 100
+(mam.specials==True).mean()*100
+# How many animals are hoppers that are above the median speed? What percentage is this?
+is_hopper = mam[mam['hoppers'] == True]
+is_hopper
+median = mam['speed'].median()
+total = mam.count()
+total
+hs = is_hopper[is_hopper["speed"] > median]
+hs
+percentage = round((hs.shape[0]/mam.shape[0] *100),2)
+print('percentage of hoppers running faster than median speed is: ', percentage)
 
-# Do automatic or manual cars have better miles per gallon?
-mpg.head()
+num_animals = sum((mam.hoppers == True) & (mam.speed > mam.speed.median()))
+print(round(num_animals/len(mam)*100,2))
 
-mpg["transmission"] = mpg.trans.str.partition("(")[0]
+# Getting data from SQL databases
+create_engine function 
+from sqlalchemy module 
+to create an engine that pandas can use to execute a query and construct a dataframe.
 
-mpg = mpg.drop(columns = ["trans"])
-mpg["average_mpg"] = (mpg.cty + mpg.hwy) / 2
+Create engine object
+- specify a connection url. 
 
-mpg_and_transmission_type = mpg[["average_mpg", "transmission"]]
-mpg_and_transmission_type.head()
-mpg_and_transmission_type.groupby("transmission").mean()
-best_mpg_transmission_type = mpg_and_transmission_type.groupby("transmission").mean().idxmax()
-best_mpg_transmission_type
+a specially formatted url that describes how to connect to a database. 
+general - 
+protocol://[user[:password]@]hostname/[database_name] 
 
-# another approach to the above problem without grouping by
-# mpg["mpg"] = (mpg.hwy + mpg.cty) / 2
+from sqlalchemy import create_engine
 
-# automatic = mpg[mpg.trans.str.contains("auto")]
-# manual = mpg[mpg.trans.str.contains("manual")]
+from env import user, password, host
 
-# auto_avg = automatic.mpg.mean()
-# manual_avg = manual.mpg.mean()
+url = 'mysql+pymysql://{}:{}@{}/fruits_db'.format(user, password, host)
+
+dbc = create_engine(url)
+
+df = pd.read_sql('SELECT * FROM fruits', dbc)
 
 
-## Exercise 2
-# Copy the users and roles dataframes from the examples above. 
-# What do you think a right join would look like? 
-# An outer join? 
-# What happens if you drop the foreign keys from the dataframes and try to merge them?
-users = pd.DataFrame({
-    'id': [1, 2, 3, 4, 5, 6],
-    'name': ['bob', 'joe', 'sally', 'adam', 'jane', 'mike'],
-    'role_id': [1, 2, 3, 3, np.nan, np.nan]
-})
-
-roles = pd.DataFrame({
-    'id': [1, 2, 3, 4],
-    'name': ['admin', 'author', 'reviewer', 'commenter']
-})
-
-right_join = pd.merge(users, roles, left_on="role_id", right_on="id", how="right")
-right_join
-
-outer_join = pd.merge(users, roles, left_on="role_id", right_on="id", how="outer")
-outer_join
-
-## Exercise 3
-# Create a function named get_db_url. It should accept a username, hostname, password, and database name and return a url formatted like in the examples in this lesson.
-def get_db_url(user, host, password, database_name):
-    url = f'mysql+pymysql://{user}:{password}@{host}/{database_name}'
+# Create a function named get_db_url. 
+def get_db_url(username, hostname, password, database):
+    url = 'mysql+pymysql://{}:{}@{}/fruits_db'.format(user, password, host)
     return url
- 
-# Use your function to obtain a connection to the employees database.
-from env import host, user, password
 
-employees_db_url = get_db_url(user, host, password, "employees")
-employees_db_url
+""" 2)Load the mpg dataset. Read the documentation for the dataset and use it for the following questions:
+2a)How many rows and columns are there?
+2b)What are the data types of each column?
+2c)Summarize the dataframe with .info and .describe
+2d)Rename the cty column to city.
+2e)Rename the hwy column to highway.
+2f)Do any cars have better city mileage than highway mileage?
+2g)Create a column named mileage_difference this column should contain the difference between highway and city mileage for each car.
+2h)Which car (or cars) has the highest mileage difference?
+2i)Which compact class car has the lowest highway mileage? The best?
+2j)Create a column named average_mileage that is the mean of the city and highway mileage.
+2k)Which dodge car has the best average mileage? The worst? """
 
-query = "select * from employees limit 10"
-pd.read_sql(query, employees_db_url)
+from pydataset import data
+mpg = data('mpg')
+#2a)
+mpg.shape
+#2b,c)
+mpg.info()
+mpg.describe()
+#2d,e)
+mpg.rename(columns = {'cty':'city','hwy':'highway'},inplace = True)
+#2f)
+better_mileage = mpg['city']>mpg['highway']
+mpg[better_mileage]
+#2g)
+mpg['mileage_difference'] = mpg.highway-mpg.city
+#2h)
+mpg.sort_values(by = 'mileage_difference',ascending=False).head(1)
+#2i)
+print(mpg[mpg['class'] == 'compact'].sort_values(by='highway',ascending=True).head(1))
+print(mpg[mpg['class'] == 'compact'].sort_values(by='highway',ascending=True).tail(1))
+#2i)
+mpg['average_mileage']=mpg[['highway','city']].apply(np.mean,axis=1)
+#2k)
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).head(1)
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).tail(1)
 
-# Once you have successfully run a query:
-#     Intentionally make a typo in the database url. What kind of error message do you see?
-#     Intentionally make an error in your SQL query. What does the error message look like?
 
-# Read the employees and titles tables into two separate dataframes
-query = "SELECT * from employees"
-employees = pd.read_sql(query, employees_db_url)
 
-query = "SELECT * FROM titles"
-titles = pd.read_sql(query, employees_db_url)
+""" 3)Load the Mammals dataset. Read the documentation for it, and use the data to answer these questions:
+3a)How many rows and columns are there?
+3b)What are the data types?
+3c)Summarize the dataframe with .info and .describe
+3d)What is the the weight of the fastest animal?
+3e)What is the overall percentage of specials? 
+3f)How many animals are hoppers that are above the median speed? What percentage is this? """
 
-# Visualize the number of employees with each title.
-unique_titles = titles.groupby("title").count()
+mammals=data('Mammals')
+mammals.head()
+#3a)
+mammals.shape
+#3b)
+mammals.dtypes
+#3c)
+mammals.info()
+mammals.describe()
+#3d)
+mammals[['weight','speed']].sort_values(by='speed',ascending=False).head(1)
+#3e)
+sum(mammals.specials==True)/len(mammals)*100
+#3f
+num_animals=sum((mammals.hoppers == True) & (mammals.speed > mammals.speed.median()))
+print(num_animals)
+print(round(num_animals/len(mammals)*100,2))
 
-unique_titles.rename(columns={"emp_no": "number_with_title"}, inplace=True)
-unique_titles = unique_titles.drop(columns=["from_date", "to_date"])
-unique_titles = unique_titles.reset_index()
-unique_titles.plot(x ='title', y='number_with_title', kind = 'bar')
+""" 2)Load the mpg dataset. Read the documentation for the dataset and use it for the following questions:
+2a)How many rows and columns are there?
+2b)What are the data types of each column?
+2c)Summarize the dataframe with .info and .describe
+2d)Rename the cty column to city.
+2e)Rename the hwy column to highway.
+2f)Do any cars have better city mileage than highway mileage?
+2g)Create a column named mileage_difference this column should contain the difference between highway and city mileage for each car.
+2h)Which car (or cars) has the highest mileage difference?
+2i)Which compact class car has the lowest highway mileage? The best?
+2j)Create a column named average_mileage that is the mean of the city and highway mileage.
+2k)Which dodge car has the best average mileage? The worst? """
 
-# Join the employees and titles dataframes together.
-employee_titles = pd.merge(employees, titles, how="inner", left_on="emp_no", right_on="emp_no")
-employee_titles.head()
+from pydataset import data
+mpg = data('mpg')
+#2a)
+mpg.shape
+#2b,c)
+mpg.info()
+mpg.describe()
+#2d,e)
+mpg.rename(columns = {'cty':'city','hwy':'highway'},inplace = True)
+#2f)
+better_mileage = mpg['city']>mpg['highway']
+mpg[better_mileage]
+#2g)
+mpg['mileage_difference'] = mpg.highway-mpg.city
+#2h)
+mpg.sort_values(by = 'mileage_difference',ascending=False).head(1)
+#2i)
+print(mpg[mpg['class'] == 'compact'].sort_values(by='highway',ascending=True).head(1))
+print(mpg[mpg['class'] == 'compact'].sort_values(by='highway',ascending=True).tail(1))
+#2i)
+mpg['average_mileage']=mpg[['highway','city']].apply(np.mean,axis=1)
+#2k)
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).head(1)
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).tail(1)
 
-# Visualize how frequently employees change titles.
-df = employee_titles.groupby("emp_no").count()
-df.head()
-df = df.reset_index()
-df = df.rename(columns={"title":"number_of_titles"})
-df = df[["number_of_titles", "emp_no"]]
-df.head()
 
-df = df.rename(columns={"emp_no":"number_of_employees"})
 
-title_counts = df.groupby("number_of_titles").count()
-title_counts = title_counts.reset_index()
-title_counts
+""" 3)Load the Mammals dataset. Read the documentation for it, and use the data to answer these questions:
+3a)How many rows and columns are there?
+3b)What are the data types?
+3c)Summarize the dataframe with .info and .describe
+3d)What is the the weight of the fastest animal?
+3e)What is the overall percentage of specials? 
+3f)How many animals are hoppers that are above the median speed? What percentage is this? """
 
-df.plot(x ='number_of_titles', y='number_of_employees', kind = 'bar')
-
-# For each title, find the hire date of the employee that was hired most recently with that title.
-employee_titles.groupby("title").hire_date.max()
-
-# create a cross tabulation of the number of titles by department. 
-# (Hint: this will involve a combination of SQL and python/pandas code)
-query = """
-    select *
-    from departments
-    join dept_emp using(dept_no)
-    join titles using(emp_no)
-    where titles.to_date > now()
-    and dept_emp.to_date > now()
-"""
-
-df = pd.read_sql(query, employees_db_url)
-df.head()
-
-# number of titles per department
-
-number_of_titles_per_dept = pd.crosstab(df.title, df.dept_name)
-number_of_titles_per_dept
+mammals=data('Mammals')
+mammals.head()
+#3a)
+mammals.shape
+#3b)
+mammals.dtypes
+#3c)
+mammals.info()
+mammals.describe()
+#3d)
+mammals[['weight','speed']].sort_values(by='speed',ascending=False).head(1)
+#3e)
+sum(mammals.specials==True)/len(mammals)*100
+#3f
+num_animals=sum((mammals.hoppers == True) & (mammals.speed > mammals.speed.median()))
+print(num_animals)
+print(round(num_animals/len(mammals)*100,2))
